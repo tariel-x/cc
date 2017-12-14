@@ -1,29 +1,16 @@
 <?php
 namespace App;
 
-use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
 
 class BaseController
 {
-    /**
-     * Request
-     *
-     * @var ServerRequestInterface
-     */
-    private $request;
-
     /**
      * Templater
      *
      * @var Templater
      */
     private $templater;
-
-    public function __construct(ServerRequestInterface $request)
-    {
-        $this->request = $request;
-    }
 
     /**
      * Set templater
@@ -44,16 +31,6 @@ class BaseController
     public function getTemplater(): Templater
     {
         return $this->templater;
-    }
-
-    /**
-     * Get request
-     *
-     * @return ServerRequestInterface
-     */
-    protected function getRequest(): ServerRequestInterface
-    {
-        return $this->request;
     }
 
     /**

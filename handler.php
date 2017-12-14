@@ -5,6 +5,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use React\Http\Response;
 use App\Templater;
 
 $templater = new Templater(__DIR__ . "/views/");
@@ -32,7 +33,7 @@ function handle (ServerRequestInterface $request)
 
     try {
         $response = callController($parameters, $request);
-    } catch (\Exception $exception) {
+    } catch (\Throwable $exception) {
         return serverError();
     }
     
@@ -66,7 +67,7 @@ function callController(array $parameters, ServerRequestInterface $request)
     $controllerParts = explode("::", $controllerString);
     $controllerClass = $controllerParts[0];
     $controllerMethod = $controllerParts[1];
-    $controller = new $controllerClass($request);
+    $controller = new $controllerClass();
     $controller->setTemplater($templater);
-    return $controller->$controllerMethod($parameters);
+    return $controller->$controllerMethod($request, $parameters);
 }

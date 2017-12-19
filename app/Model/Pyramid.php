@@ -4,6 +4,9 @@ namespace App\Model;
 
 class Pyramid
 {
+    public $full_name = "";
+    public $class_name = "";
+
     public $row1col1 = "12-1";
     public $row2col1 = "";
 

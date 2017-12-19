@@ -10,7 +10,7 @@ class ControllerA extends BaseController
     public function foo(ServerRequestInterface $request, array $parameters)
     {
         $result = $this->getTemplater()->render('home', [
-            'date' => $parameters['month'],
+            'date' => (new \DateTime())->format('c'),
         ]);
         return $this->returnHtml($result);
     }
@@ -22,7 +22,7 @@ class ControllerA extends BaseController
 
         $mapped = $mapper->map($request->getQueryParams(), $model);
         if ($mapped) {
-            $service = new Gateway('http:/127.0.0.1:4443');
+            $service = new Gateway('http://localhost:1323');
             if ($service->addPyramid($model)) {
                 $model = new Pyramid();
             } else {
@@ -37,6 +37,22 @@ class ControllerA extends BaseController
 
         $result = $this->getTemplater()->render('new_record', [
             'model' => $model,
+        ]);
+        return $this->returnHtml($result);
+    }
+
+    public function getStat(ServerRequestInterface $request, array $parameters)
+    {
+        $queryParams = $request->getQueryParams();
+        if (!isset($queryParams['class_name'])) {
+            $result = $this->getTemplater()->render('select_class');
+            return $this->returnHtml($result);
+        }
+
+        $service = new Gateway('http://localhost:1323');
+        $data = $service->getStat($queryParams['class_name']);
+        $result = $this->getTemplater()->render('show_stat', [
+            'data' => $data,
         ]);
         return $this->returnHtml($result);
     }

@@ -7,6 +7,18 @@ use App\Service\Gateway;
 
 class ControllerA extends BaseController
 {
+    /**
+     * Validator
+     *
+     * @var Validator
+     */
+    private $validator;
+
+    public function __construct()
+    {
+        $this->validator = new Validator();
+    }
+
     public function foo(ServerRequestInterface $request, array $parameters)
     {
         $result = $this->getTemplater()->render('home', [
@@ -22,18 +34,25 @@ class ControllerA extends BaseController
 
         $mapped = $mapper->map($request->getQueryParams(), $model);
         if ($mapped) {
+            $validationErrors = $this->validator->validatePyramid($model);
+            if (!empty($validationErrors)) {
+                $result = $this->getTemplater()->render('new_record', [
+                    'model' => $model,
+                    'error' => $validationErrors,
+                ]);
+                return $this->returnHtml($result);
+            }
             $service = new Gateway('http://localhost:1323');
             if ($service->addPyramid($model)) {
                 $model = new Pyramid();
             } else {
                 $result = $this->getTemplater()->render('new_record', [
                     'model' => $model,
-                    'error' => 'not saved',
+                    'error' => ['not saved'],
                 ]);
                 return $this->returnHtml($result);
             }
         }
-
 
         $result = $this->getTemplater()->render('new_record', [
             'model' => $model,

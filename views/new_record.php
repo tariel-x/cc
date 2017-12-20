@@ -7,10 +7,18 @@
     <title>New record</title>
 </head>
 <body>
+    <a href="/new_record">Insert pyramid</a> <a href="/stat">Calculate</a>
+    <p>
+        <?php
+            if (isset($error)) {
+                print implode("<br/>", $error);
+            }
+        ?>
+    </p>
     <form action="">
     <h1>New record</h1>
-    <p>Class name: <input type='text' name='class_name' size=5></p>
-    <p>Full name: <input type='text' name='full_name' size=5></p>
+    <p>Class name: <input type='text' name='class_name' value='<?php print $model->class_name; ?>' size=5></p>
+    <p>Full name: <input type='text' name='full_name' value='<?php print $model->full_name; ?>' size=35></p>
     <table border="0px">
         <?php for ($i=1; $i<=12; $i++) {?>
         <tr>

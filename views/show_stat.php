@@ -1,9 +1,24 @@
 <?php
 /** @var array $data */
-?>
 
-<?php
-/** @var \App\Model $model */
+$xKeys = array_values($data['avg']);
+
+$values = array_values($data['disp']);
+
+$yData = [];
+
+for ($i = 1; $i <= 40; $i++) {
+    $yData[] = [
+        $values[$i-1],
+        "card" . (string)$i,
+    ];
+}
+
+array_multisort($xKeys, $yData);
+
+$yKeys = array_column($yData, 0);
+$labels = array_column($yData, 1);
+
 ?>
 
 <!DOCTYPE html>
@@ -12,15 +27,18 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <?php echo json_encode($data, JSON_PRETTY_PRINT); ?>
+    <a href="/new_record">Insert pyramid</a> <a href="/stat">Calculate</a>
+    <br/><br/><?php print json_encode($xKeys, JSON_PRETTY_PRINT); ?>
+    <br/><br/><?php print json_encode($yKeys, JSON_PRETTY_PRINT); ?>
+    <br/><br/><?php print json_encode($labels, JSON_PRETTY_PRINT); ?>
     <div id="myDiv"></div>
     <script>
         var trace1 = {
-            x: [4.666666666666667, 4.333333333333333], 
-            y: [0.6666666666666666, 1],
-            mode: 'lines+markers', 
+            x: <?php print json_encode($xKeys); ?>, 
+            y: <?php print json_encode($yKeys); ?>, 
+            mode: 'markers', 
             name: 'Points', 
-            text: ['1', '2'], 
+            text: <?php print json_encode($labels); ?>, 
             marker: {
                 color: 'rgb(219, 64, 82)', 
                 size: 12,
@@ -32,12 +50,12 @@
         var layout = {
             title: 'Data', 
             xaxis: {
-                title: 'x', 
+                title: 'avg', 
                 showgrid: false, 
                 zeroline: false
             }, 
             yaxis: {
-                title: 'y', 
+                title: 'sq avg', 
                 showline: true
             }
         };

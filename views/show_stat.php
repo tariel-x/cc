@@ -24,42 +24,39 @@ $labels = array_column($yData, 1);
 <!DOCTYPE html>
 <head>
     <title>Show stat</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chartist-plugin-tooltips@0.0.17/dist/chartist-plugin-tooltip.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartist-plugin-tooltips@0.0.17/dist/chartist-plugin-tooltip.min.js"></script>
 </head>
 <body>
     <a href="/new_record">Insert pyramid</a> <a href="/stat">Calculate</a>
     <br/><br/><?php print json_encode($xKeys, JSON_PRETTY_PRINT); ?>
     <br/><br/><?php print json_encode($yKeys, JSON_PRETTY_PRINT); ?>
     <br/><br/><?php print json_encode($labels, JSON_PRETTY_PRINT); ?>
-    <div id="myDiv"></div>
+    <div class="ct-chart ct-perfect-fourth"></div>
     <script>
-        var trace1 = {
-            x: <?php print json_encode($xKeys); ?>, 
-            y: <?php print json_encode($yKeys); ?>, 
-            mode: 'markers', 
-            name: 'Points', 
-            text: <?php print json_encode($labels); ?>, 
-            marker: {
-                color: 'rgb(219, 64, 82)', 
-                size: 12,
-                width: 3
+        var chart = new Chartist.Line(
+            '.ct-chart', 
+            {
+                labels: [1, 2, 3],
+                series: [
+                [
+                    {meta: 'description', value: 1 },
+                    {meta: 'description', value: 5},
+                    {meta: 'description', value: 3}
+                ]
+                ]
             }, 
-            type: 'scatter'
-        };
-        var data = [trace1];
-        var layout = {
-            title: 'Data', 
-            xaxis: {
-                title: 'avg', 
-                showgrid: false, 
-                zeroline: false
-            }, 
-            yaxis: {
-                title: 'sq avg', 
-                showline: true
+            {
+                width: '70%',
+                height: '500px',
+                fullWidth: true,
+                plugins: [
+                    Chartist.plugins.tooltip()
+                ],
+                showLine: false
             }
-        };
-
-        Plotly.newPlot('myDiv', data, layout);
+        );
     </script>
 </body>

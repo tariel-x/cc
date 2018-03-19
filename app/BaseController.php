@@ -48,4 +48,20 @@ class BaseController
             $response
         );
     }
+
+    /**
+     * Returns json response
+     * 
+     * @param array $data
+     * @param int $status
+     * @return Response
+     */
+    protected function returnJson(array $data, int $status = 200)
+    {
+        return new Response(
+            $status,
+            array('Content-Type' => 'application/javascript'),
+            json_encode($data)
+        );
+    }
 }

@@ -9,8 +9,5 @@ $routes = new RouteCollection();
 $route = new Route('/', ['_controller' => ControllerA::class . "::foo"]);
 $routes->add('foo', $route);
 
-$route = new Route('/new_record', ['_controller' => ControllerA::class . "::newRecord"]);
-$routes->add('newRecord', $route);
-
-$route = new Route('/stat', ['_controller' => ControllerA::class . "::getStat"]);
-$routes->add('select_stat', $route);
+$route = new Route('/rpc', ['_controller' => ControllerA::class . "::rpcHandler"]);
+$routes->add('rpc', $route);

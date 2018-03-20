@@ -10,32 +10,92 @@ class InMemoryStorage implements SchemeStorageInterface
      */
     private $schemes = [];
 
-    public function save(array $scheme, string $name, array $service): bool
+    /**
+     * scheme index
+     *
+     * @var array
+     */
+    private $index = [];
+
+    /**
+     * Save scheme
+     *
+     * @param Contract $contract
+     * @return bool
+     */
+    public function save(Contract $contract): bool
     {
-        $this->schemes[$name] = [
-            'scheme' => $scheme,
-            'service' => $service,
-        ];
+        if (!array_key_exists($contract->getName(), $this->schemes)) {
+            $this->schemes[$contract->getName()] = [];
+        }
+        $this->schemes[$contract->getName()][] = $contract;
+        $this->addIndex($contract);
         return true;
     }
 
     /**
-     * @param string $name
-     * @return array|null
+     * Build scheme index
+     *
+     * @param Contract $contract
      */
-    public function get(string $name): ?array
+    private function addIndex(Contract $contract)
     {
-        if (array_key_exists($name, $this->schemes)) {
-            return $this->schemes[$name]['scheme'];
+        $hash = $this->hash($contract->getScheme());
+        if (!array_key_exists($hash, $this->index)) {
+            $this->index[$hash] = [];
         }
-        return null;
+        $this->index[$hash][] = $contract->getName();
     }
 
-    public function getService(string $name): ?array
+    /**
+     * make scheme hash
+     *
+     * @param array $scheme
+     * @return string
+     */
+    private function hash(array $scheme): string
     {
-        if (array_key_exists($name, $this->schemes)) {
-            return $this->schemes[$name]['service'];
+        return md5(json_encode($scheme));
+    }
+
+    /**
+     * Get schemes by name
+     *
+     * @param string $name
+     * @return Contract[]
+     */
+    public function get(string $name): array
+    {
+        if (!array_key_exists($name, $this->schemes)) {
+            return [];
         }
-        return null;
-    }  
+        return $this->schemes[$name];
+    }
+
+    /**
+     * Get all schemes
+     *
+     * @return Contract[]
+     */
+    public function getAll(): array
+    {
+        return array_reduce($this->schemes, function (array $carry, array $item) {
+            return array_merge($carry, array_values($item));
+        }, []);
+    }
+
+    /**
+     * Get service definition
+     *
+     * @param array $scheme
+     * @return string[]
+     */
+    public function getNameByScheme(array $scheme): array
+    {
+        $hash = $this->hash($scheme);
+        if (!array_key_exists($hash, $this->index)) {
+            return [];
+        }
+        return $this->index[$hash];
+    }
 }

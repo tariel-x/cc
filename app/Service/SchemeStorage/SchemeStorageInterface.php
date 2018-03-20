@@ -9,28 +9,32 @@ namespace App\Service\SchemeStorage;
 interface SchemeStorageInterface
 {
     /**
-     * save the scheme
+     * Save scheme
+     * @param Contract $contract
+     * @return bool
+     */
+    public function save(Contract $contract): bool;
+
+    /**
+     * Get schemes by name
+     *
+     * @param string $name
+     * @return Contract[]
+     */
+    public function get(string $name): array;
+
+    /**
+     * Get all schemes
+     *
+     * @return Contract[]
+     */
+    public function getAll(): array;
+
+    /**
+     * Get names by scheme
      *
      * @param array $scheme
-     * @param string $name
-     * @param array $service
-     * @return boolean
+     * @return string[]
      */
-    public function save(array $scheme, string $name, array $service): bool;
-
-    /**
-     * Get scheme by name
-     *
-     * @param string $name
-     * @return array
-     */
-    public function get(string $name): ?array;
-
-    /**
-     * Get service info by scheme name
-     *
-     * @param string $name
-     * @return array
-     */
-    public function getService(string $name): ?array;
+    public function getNameByScheme(array $scheme): array;
 }

@@ -15,4 +15,10 @@ class Handlers
             'status' => 'ok',
         ];
     }
+
+    public function register(array $scheme, string $name): bool
+    {
+        
+        return true;
+    }
 }

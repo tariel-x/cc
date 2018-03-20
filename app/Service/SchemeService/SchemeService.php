@@ -13,6 +13,7 @@ class SchemeService
 
     /**
      * SchemeService constructor.
+     *
      * @param SchemeStorageInterface $storage
      */
     public function __construct(SchemeStorageInterface $storage)
@@ -30,6 +31,7 @@ class SchemeService
 
     /**
      * Register new service with scheme
+     *
      * @param array $scheme
      * @param array $service
      * @param string $name
@@ -39,5 +41,16 @@ class SchemeService
     {
         $contract = new Contract($name, $scheme, $service);
         return $this->getStorage()->save($contract);
+    }
+
+    /**
+     * Unregister service
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function forgetService(string $name): bool
+    {
+        return $this->getStorage()->removeSchemes($name);
     }
 }

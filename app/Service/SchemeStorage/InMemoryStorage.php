@@ -98,4 +98,19 @@ class InMemoryStorage implements SchemeStorageInterface
         }
         return $this->index[$hash];
     }
+
+    /**
+     * Remove schemes by name
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function removeSchemes(string $name): bool
+    {
+        unset($this->schemes[$name]);
+        $this->index = array_filter($this->index, function ($item) use ($name) {
+            return $item === $name;
+        });
+        return true;
+    }
 }

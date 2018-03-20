@@ -36,7 +36,7 @@ interface SchemeStorageInterface
      * @param array $scheme
      * @return string[]
      */
-    public function getNameByScheme(array $scheme): array;
+    public function getNameByContract(array $scheme): array;
 
     /**
      * Remove schemes by name
@@ -44,5 +44,5 @@ interface SchemeStorageInterface
      * @param string $name
      * @return bool
      */
-    public function removeSchemes(string $name): bool;
+    public function removeContracts(string $name): bool;
 }

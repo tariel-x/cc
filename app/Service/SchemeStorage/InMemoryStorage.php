@@ -8,7 +8,7 @@ class InMemoryStorage implements SchemeStorageInterface
      *
      * @var array
      */
-    private $schemes = [];
+    private $contracts = [];
 
     /**
      * scheme index
@@ -25,10 +25,10 @@ class InMemoryStorage implements SchemeStorageInterface
      */
     public function save(Contract $contract): bool
     {
-        if (!array_key_exists($contract->getName(), $this->schemes)) {
-            $this->schemes[$contract->getName()] = [];
+        if (!array_key_exists($contract->getName(), $this->contracts)) {
+            $this->contracts[$contract->getName()] = [];
         }
-        $this->schemes[$contract->getName()][] = $contract;
+        $this->contracts[$contract->getName()][] = $contract;
         $this->addIndex($contract);
         return true;
     }
@@ -50,36 +50,36 @@ class InMemoryStorage implements SchemeStorageInterface
     /**
      * make scheme hash
      *
-     * @param array $scheme
+     * @param array $contract
      * @return string
      */
-    private function hash(array $scheme): string
+    private function hash(array $contract): string
     {
-        return md5(json_encode($scheme));
+        return md5(json_encode($contract));
     }
 
     /**
-     * Get schemes by name
+     * Get contracts by name
      *
      * @param string $name
      * @return Contract[]
      */
     public function get(string $name): array
     {
-        if (!array_key_exists($name, $this->schemes)) {
+        if (!array_key_exists($name, $this->contracts)) {
             return [];
         }
-        return $this->schemes[$name];
+        return $this->contracts[$name];
     }
 
     /**
-     * Get all schemes
+     * Get all contracts
      *
      * @return Contract[]
      */
     public function getAll(): array
     {
-        return array_reduce($this->schemes, function (array $carry, array $item) {
+        return array_reduce($this->contracts, function (array $carry, array $item) {
             return array_merge($carry, array_values($item));
         }, []);
     }
@@ -90,7 +90,7 @@ class InMemoryStorage implements SchemeStorageInterface
      * @param array $scheme
      * @return string[]
      */
-    public function getNameByScheme(array $scheme): array
+    public function getNameByContract(array $scheme): array
     {
         $hash = $this->hash($scheme);
         if (!array_key_exists($hash, $this->index)) {
@@ -100,14 +100,14 @@ class InMemoryStorage implements SchemeStorageInterface
     }
 
     /**
-     * Remove schemes by name
+     * Remove contracts by name
      *
      * @param string $name
      * @return bool
      */
-    public function removeSchemes(string $name): bool
+    public function removeContracts(string $name): bool
     {
-        unset($this->schemes[$name]);
+        unset($this->contracts[$name]);
         $this->index = array_filter($this->index, function ($item) use ($name) {
             return $item === $name;
         });

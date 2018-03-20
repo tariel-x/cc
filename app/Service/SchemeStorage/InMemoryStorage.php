@@ -19,6 +19,10 @@ class InMemoryStorage implements SchemeStorageInterface
         return true;
     }
 
+    /**
+     * @param string $name
+     * @return array|null
+     */
     public function get(string $name): ?array
     {
         if (array_key_exists($name, $this->schemes)) {

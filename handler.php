@@ -34,6 +34,8 @@ function handle (ServerRequestInterface $request)
     try {
         $response = callController($parameters, $request);
     } catch (\Throwable $exception) {
+        print $exception->getMessage();
+        print $exception->getTraceAsString();
         return serverError();
     }
     

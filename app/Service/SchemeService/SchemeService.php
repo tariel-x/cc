@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\SchemeService;
+namespace App\Service\SchemeService;
 
 use App\Service\SchemeStorage\Contract;
 use App\Service\SchemeStorage\Scheme;

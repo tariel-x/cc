@@ -16,9 +16,9 @@ class ControllerA extends BaseController
      */
     private $jsonRPC;
 
-    public function __construct()
+    public function __construct(JsonRPC $jsonRPC)
     {
-        $this->jsonRPC = new JsonRPC();
+        $this->jsonRPC = $jsonRPC;
     }
 
     /**

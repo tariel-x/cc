@@ -6,9 +6,9 @@ class JsonRPC
 {
     private $handler;
 
-    public function __construct()
+    public function __construct(Handlers $handler)
     {
-        $this->handler = new Handlers();
+        $this->handler = $handler;
     }
 
 

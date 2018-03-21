@@ -9,6 +9,13 @@ require_once(__DIR__ . '/vendor/autoload.php');
 require_once(__DIR__ . '/routes.php');
 require_once(__DIR__ . '/handler.php');
 
+//services
+$schemeStorage = new \App\Service\SchemeStorage\InMemoryStorage();
+$schemeService = new \App\Service\SchemeService\SchemeService($schemeStorage);
+$handlers = new \App\Service\RPC\Handlers($schemeService);
+$jsonrpc = new \App\Service\RPC\JsonRPC($handlers);
+
+//server
 $loop = React\EventLoop\Factory::create();
 
 $server = new Server(function (ServerRequestInterface $request) {

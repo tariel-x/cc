@@ -86,13 +86,14 @@ function callController(array $parameters, ServerRequestInterface $request, stri
 {
     printf("New request %s %s%s\n", $request->getMethod(), $request->getUri()->getPath(), $request->getUri()->getQuery());
     global $templater;
+    global $jsonrpc;
     $controllerString = $parameters['_controller'];
     unset($parameters['_controller']);
     unset($parameters['_route']);
     $controllerParts = explode("::", $controllerString);
     $controllerClass = $controllerParts[0];
     $controllerMethod = $controllerParts[1];
-    $controller = new $controllerClass();
+    $controller = new $controllerClass($jsonrpc);
     $controller->setTemplater($templater);
     return $controller->$controllerMethod($request, $parameters, $body);
 }

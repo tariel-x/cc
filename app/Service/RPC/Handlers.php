@@ -33,6 +33,11 @@ class Handlers
         return $this->getService()->register($scheme, [], $name);
     }
 
+    public function getSchemes(string $name): array
+    {
+        return $this->getService()->getContracts($name);
+    }
+
     /**
      * Get the value of service
      *

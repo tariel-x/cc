@@ -44,6 +44,14 @@ class SchemeService
         return $this->getStorage()->save($contract);
     }
 
+    public function getContracts(string $name): ?array
+    {
+        $contracts = $this->getStorage()->get($name);
+        return array_map(function (Contract $contract) {
+            return $contract->getScheme();
+        }, $contracts);
+    }
+
     /**
      * @param array $schemes
      * @return Scheme[]

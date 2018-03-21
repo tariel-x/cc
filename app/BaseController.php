@@ -60,7 +60,7 @@ class BaseController
     {
         return new Response(
             $status,
-            array('Content-Type' => 'application/javascript'),
+            array('Content-Type' => 'application/json'),
             json_encode($data)
         );
     }

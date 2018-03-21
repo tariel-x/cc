@@ -18,7 +18,7 @@ class JsonRPC
         $params = $req['params'];
         $result = call_user_func_array([$this->handler, $method], $params);
 
-        $return = clone $req;
+        $return = $req;
         unset($return['method']);
         unset($return['params']);
         $return['result'] = $result;

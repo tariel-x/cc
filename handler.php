@@ -6,6 +6,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use React\Http\Response;
+use React\Promise\Promise;
 use App\Templater;
 
 $templater = new Templater(__DIR__ . "/views/");
@@ -32,7 +33,7 @@ function handle (ServerRequestInterface $request)
     }
 
     try {
-        $response = callController($parameters, $request);
+        $response = waitBodyEnd($parameters, $request);
     } catch (\Throwable $exception) {
         print $exception->getMessage();
         print $exception->getTraceAsString();
@@ -60,8 +61,30 @@ function serverError()
     );
 }
 
-function callController(array $parameters, ServerRequestInterface $request)
+function waitBodyEnd(array $parameters, ServerRequestInterface $request)
 {
+    return new Promise(function ($resolve, $reject) use ($request, $parameters) {
+        $contentLength = 0;
+        $content = "";
+        $request->getBody()->on('data', function ($data) use (&$contentLength, &$content) {
+            $contentLength += strlen($data);
+            $content .= $data;
+        });
+        $request->getBody()->on('end', function () use ($resolve, &$contentLength, &$content, &$request, $parameters){
+            $response = callController($parameters, $request, $content);
+            $resolve($response);
+        });
+        // an error occures e.g. on invalid chunked encoded data or an unexpected 'end' event
+        $request->getBody()->on('error', function (\Exception $exception) use ($resolve, &$contentLength) {
+            $response = serverError();
+            $resolve($response);
+        });
+    });
+}
+
+function callController(array $parameters, ServerRequestInterface $request, string $body)
+{
+    printf("New request %s %s%s\n", $request->getMethod(), $request->getUri()->getPath(), $request->getUri()->getQuery());
     global $templater;
     $controllerString = $parameters['_controller'];
     unset($parameters['_controller']);
@@ -71,5 +94,5 @@ function callController(array $parameters, ServerRequestInterface $request)
     $controllerMethod = $controllerParts[1];
     $controller = new $controllerClass();
     $controller->setTemplater($templater);
-    return $controller->$controllerMethod($request, $parameters);
+    return $controller->$controllerMethod($request, $parameters, $body);
 }

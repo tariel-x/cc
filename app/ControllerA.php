@@ -4,6 +4,8 @@ namespace App;
 use Psr\Http\Message\ServerRequestInterface;
 use App\Model\Pyramid;
 use App\Service\RPC\JsonRPC;
+use React\Promise\Promise;
+use React\Http\Response;
 
 class ControllerA extends BaseController
 {
@@ -26,7 +28,7 @@ class ControllerA extends BaseController
      * @param array $parameters
      * @return void
      */
-    public function foo(ServerRequestInterface $request, array $parameters)
+    public function foo(ServerRequestInterface $request, array $parameters, string $body)
     {
         $result = $this->getTemplater()->render('home', [
             'date' => (new \DateTime())->format('c'),
@@ -42,13 +44,9 @@ class ControllerA extends BaseController
      * @param array $parameters
      * @return void
      */
-    public function rpcHandler(ServerRequestInterface $request, array $parameters) 
+    public function rpcHandler(ServerRequestInterface $request, array $parameters, string $body) 
     {
-        print "aa\n";        
-        $body = $request->getBody()->getContents();
-        var_dump($body);
         $call = json_decode($body, true);
-        var_dump($call);
         $result = $this->jsonRPC->handle($call);
         return $this->returnJson($result);
     }

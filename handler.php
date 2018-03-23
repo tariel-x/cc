@@ -84,7 +84,7 @@ function waitBodyEnd(array $parameters, ServerRequestInterface $request)
 
 function callController(array $parameters, ServerRequestInterface $request, string $body)
 {
-    printf("New request %s %s%s\n", $request->getMethod(), $request->getUri()->getPath(), $request->getUri()->getQuery());
+    printf("%s %s%s\n", $request->getMethod(), $request->getUri()->getPath(), $request->getUri()->getQuery());
     global $templater;
     global $jsonrpc;
     $controllerString = $parameters['_controller'];

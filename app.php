@@ -1,8 +1,6 @@
 <?php
 
 use Psr\Http\Message\ServerRequestInterface;
-use React\EventLoop\Factory;
-use React\Http\Response;
 use React\Http\Server;
 
 require_once(__DIR__ . '/vendor/autoload.php');
@@ -24,5 +22,5 @@ $server = new Server(function (ServerRequestInterface $request) {
 
 $socket = new React\Socket\Server('0.0.0.0:8883', $loop);
 $server->listen($socket);
-
+print "Serer started at 0.0.0.0:8883\n";
 $loop->run();

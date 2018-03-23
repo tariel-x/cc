@@ -106,6 +106,29 @@ class SchemeService
      */
     private function compareSchemaQueue(array $schemes1, array $schemes2): bool
     {
-        return true;
+        if ($this->compareByHash($schemes1, $schemes2)) {
+            return true;
+        }
+        //todo another check
+        return false;
+    }
+
+    /**
+     * @param Scheme[] $schemes1
+     * @param Scheme[] $schemes2
+     * @return bool
+     */
+    private function compareByHash(array $schemes1, array $schemes2): bool
+    {
+        $hashes1 = array_map(function (Scheme $scheme) {
+            return md5(json_encode($scheme));
+        }, $schemes1);
+        $hashes2 = array_map(function (Scheme $scheme) {
+            return md5(json_encode($scheme));
+        }, $schemes2);
+        if (count(array_diff($hashes1, $hashes2)) === 0) {
+            return true;
+        }
+        return false;
     }
 }

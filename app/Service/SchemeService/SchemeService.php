@@ -94,7 +94,7 @@ class SchemeService
         });
 
         return array_map(function (Contract $contract) {
-            return $contract->getName();
+            return $contract->getService();
         }, $contracts);
     }
 

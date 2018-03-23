@@ -28,9 +28,15 @@ class Handlers
         ];
     }
 
-    public function register(array $scheme, string $name): bool
+    /**
+     * @param array $scheme
+     * @param array $service
+     * @param string $name
+     * @return bool
+     */
+    public function register(array $scheme, array $service, string $name): bool
     {
-        return $this->getService()->register($scheme, [], $name);
+        return $this->getService()->register($scheme, $service, $name);
     }
 
     public function getSchemes(string $name): array

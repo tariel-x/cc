@@ -39,9 +39,18 @@ class Handlers
         return $this->getService()->register($scheme, $service, $name);
     }
 
+    /**
+     * @param string $name
+     * @return array
+     */
     public function getSchemes(string $name): array
     {
         return $this->getService()->getContracts($name);
+    }
+
+    public function resolve(array $contract): array
+    {
+        return $this->getService()->resolveContract($contract);
     }
 
     /**

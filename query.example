@@ -5,15 +5,11 @@
     "scheme": [
       {
         "in": true,
-        "scheme:": {
-
-        },
+        "scheme": ["aaa"],
         "type": "json-schema"
       }
     ],
-    "service": {
-
-    },
+    "service": {},
     "name": "test"
   },
   "id": 1

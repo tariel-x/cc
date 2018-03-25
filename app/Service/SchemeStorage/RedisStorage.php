@@ -57,6 +57,13 @@ class RedisStorage implements SchemeStorageInterface
         $this->redis->set($hash, json_encode($contract));
     }
 
+    private function updateIndex(Contract $contract)
+    {
+        $hash = $this->hash($contract->getScheme());
+        $value = json_decode($this->redis->get($hash), true);
+        $value['service'][] = $contract->getService();
+    }
+
     /**
      * make scheme hash
      *

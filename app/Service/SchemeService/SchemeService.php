@@ -40,7 +40,7 @@ class SchemeService
      */
     public function register(array $schemes, array $service, string $name): bool
     {
-        $contract = new Contract($name, $this->makeSchemes($schemes), $service);
+        $contract = new Contract($name, $this->makeSchemes($schemes), $this->makeService($service));
         return $this->getStorage()->save($contract);
     }
 
@@ -48,7 +48,7 @@ class SchemeService
     {
         $contracts = $this->getStorage()->get($name);
         return array_map(function (Contract $contract) {
-            return $contract->getScheme();
+            return $contract->getSchemes();
         }, $contracts);
     }
 
@@ -65,6 +65,11 @@ class SchemeService
                 (string)$item['type']
             );
         }, $schemes);
+    }
+
+    private function makeService(array $service): Service
+    {
+        return new Service($service['name'], $service['address']);
     }
 
     /**

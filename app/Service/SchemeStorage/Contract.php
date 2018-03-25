@@ -6,7 +6,7 @@ namespace App\Service\SchemeStorage;
  * @package App\Service\SchemeStorage
  * @author Nikita Gerasimov <tariel-x@ya.ru>
  */
-class Contract
+class Contract implements \JsonSerializable
 {
     /**
      * @var string
@@ -89,5 +89,14 @@ class Contract
     {
         $this->service = $service;
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'name' => $this->getName(),
+            'schemes' => $this->getScheme(),
+            'service' => $this->getService(),
+        ];
     }
 }

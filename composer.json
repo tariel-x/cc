@@ -9,8 +9,7 @@
     ],
     "require": {
         "symfony/routing": "^4.0",
-        "react/http": "^0.7.4",
-        "clue/redis-react": "^2.2"
+        "react/http": "^0.7.4"
     },
     "autoload": {
         "psr-4": {

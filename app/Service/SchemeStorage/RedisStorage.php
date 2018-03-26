@@ -41,7 +41,7 @@ class RedisStorage implements SchemeStorageInterface
     public function save(Contract $contract): bool
     {
         $hash = $this->hash($contract->getSchemes());
-        $rawContract = (array)$contract;
+        $rawContract = $contract->jsonSerialize();
         $this->redis->set($hash, json_encode($rawContract));
         return true;
     }

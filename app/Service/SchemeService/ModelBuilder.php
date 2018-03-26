@@ -8,9 +8,13 @@ class ModelBuilder
 {
     public function createContractModel(Contract $contract): ContractModel
     {
+        $schemes = array_map(function (Scheme $scheme) {
+            return $scheme->jsonSerialize();
+        }, $contract->getSchemes());
+
         return new ContractModel(
-            (array)$contract->getSchemes(),
-            [(array)$contract->getService()]
+            $schemes,
+            [$contract->getService()->jsonSerialize()]
         );
     }
 

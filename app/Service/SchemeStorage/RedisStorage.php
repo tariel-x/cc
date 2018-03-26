@@ -41,6 +41,8 @@ class RedisStorage implements SchemeStorageInterface
         $value = $this->redis->get($hash);
         if ($value === false) {
             $this->addIndex($contract);
+        } else {
+            $this->updateIndex($contract);
         }
         printf("New hash %s\n", $hash);
         return true;
@@ -54,7 +56,14 @@ class RedisStorage implements SchemeStorageInterface
     private function addIndex(Contract $contract)
     {
         $hash = $this->hash($contract->getScheme());
-        $this->redis->set($hash, json_encode($contract));
+        $rawContract = (array)$contract;
+        //make array of services for internal view
+        if (!empty($rawContract['service'])) {
+            $rawContract['service'] = [$rawContract['service']];
+        } else {
+            $rawContract['service'] = [];
+        }
+        $this->redis->set($hash, json_encode($rawContract));
     }
 
     private function updateIndex(Contract $contract)
@@ -62,6 +71,7 @@ class RedisStorage implements SchemeStorageInterface
         $hash = $this->hash($contract->getScheme());
         $value = json_decode($this->redis->get($hash), true);
         $value['service'][] = $contract->getService();
+        $this->redis->set($hash, json_encode($value));
     }
 
     /**

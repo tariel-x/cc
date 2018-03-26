@@ -25,10 +25,10 @@ interface SchemeStorageInterface
     public function getAll(): array;
 
     /**
-     * Remove schemes by name
+     * Get contract by scheme
      *
-     * @param string $name
-     * @return bool
+     * @param array $schemes
+     * @return Contract
      */
-    public function removeContracts(string $name): bool;
+    public function get(array $schemes): ?Contract;
 }

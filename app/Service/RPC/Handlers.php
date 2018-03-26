@@ -43,6 +43,11 @@ class Handlers
         return $this->getService()->getAll();
     }
 
+    public function get(array $schemes)
+    {
+        return $this->getService()->get($schemes);
+    }
+
     public function resolve(array $contract): array
     {
         return $this->getService()->resolveContract($contract);

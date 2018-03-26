@@ -47,6 +47,11 @@ class SchemeService
         return (array)$this->getStorage()->getAll();
     }
 
+    public function get(array $schemes)
+    {
+        return $this->getStorage()->get($schemes);
+    }
+
     /**
      * Unregister service
      *

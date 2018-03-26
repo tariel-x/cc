@@ -74,33 +74,13 @@ class RedisStorage implements SchemeStorageInterface
         }, $data);
     }
 
-    /**
-     * Get service definition
-     *
-     * @param array $scheme
-     * @return string[]
-     */
-    public function getNameByContract(array $scheme): array
+    public function get(array $schemes): ?Contract
     {
-        $hash = $this->hash($scheme);
-        if (!array_key_exists($hash, $this->index)) {
-            return [];
+        $hash = $this->hash($schemes);
+        $data = $this->redis->get($hash);
+        if ($data === false) {
+            return null;
         }
-        return $this->index[$hash];
-    }
-
-    /**
-     * Remove contracts by name
-     *
-     * @param string $name
-     * @return bool
-     */
-    public function removeContracts(string $name): bool
-    {
-        unset($this->contracts[$name]);
-        $this->index = array_filter($this->index, function ($item) use ($name) {
-            return $item === $name;
-        });
-        return true;
+        return (new ModelBuilder())->modelFromRaw(json_decode($data, true));
     }
 }

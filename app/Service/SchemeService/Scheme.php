@@ -25,6 +25,11 @@ class Scheme implements \JsonSerializable
     private $type;
 
     /**
+     * @var integer
+     */
+    private $priority = 0;
+
+    /**
      * Scheme constructor.
      *
      * @param bool $in
@@ -92,6 +97,8 @@ class Scheme implements \JsonSerializable
         return $this;
     }
 
+    
+
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -103,8 +110,31 @@ class Scheme implements \JsonSerializable
     {
         return [
             'type' => $this->getType(),
+            'priority' => $this->getPriority(),
             'in' => $this->isIn(),
             'scheme' => $this->getScheme(),
         ];
+    }
+
+    /**
+     * Get the value of priority
+     *
+     * @return  integer
+     */ 
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * Set the value of priority
+     *
+     * @param  integer  $priority
+     * @return  self
+     */ 
+    public function setPriority(int $priority)
+    {
+        $this->priority = $priority;
+        return $this;
     }
 }

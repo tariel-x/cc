@@ -1,5 +1,5 @@
 <?php
-namespace App\Service\SchemeStorage;
+namespace App\Service\SchemeService;
 
 /**
  * Class Scheme
@@ -31,7 +31,7 @@ class Scheme implements \JsonSerializable
      * @param array $scheme
      * @param string $type
      */
-    public function __construct($in, array $scheme, $type)
+    public function __construct(bool $in, array $scheme, string $type)
     {
         $this->in = $in;
         $this->scheme = $scheme;

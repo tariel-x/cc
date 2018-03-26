@@ -1,6 +1,10 @@
 <?php
 namespace App\Service\SchemeStorage;
 
+use App\Service\SchemeService\Contract;
+use App\Service\SchemeService\Scheme;
+use App\Service\SchemeService\Service;
+
 class InMemoryStorage implements SchemeStorageInterface
 {
     /**

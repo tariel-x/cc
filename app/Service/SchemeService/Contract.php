@@ -1,5 +1,5 @@
 <?php
-namespace App\Service\SchemeStorage;
+namespace App\Service\SchemeService;
 
 /**
  * Class Contract
@@ -9,50 +9,25 @@ namespace App\Service\SchemeStorage;
 class Contract implements \JsonSerializable
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var array
      */
     private $schemes;
 
     /**
-     * @var array
+     * @var Service
      */
     private $service;
 
     /**
      * Contract constructor.
      *
-     * @param string $name
-     * @param array $scheme
+     * @param array $schemes
      * @param array $service
      */
-    public function __construct(string $name, array $scheme, array $service)
+    public function __construct(array $schemes, array $service)
     {
-        $this->name = $name;
-        $this->scheme = $scheme;
+        $this->schemes = $schemes;
         $this->service = $service;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return Contract
-     */
-    public function setName(string $name): Contract
-    {
-        $this->name = $name;
-        return $this;
     }
 
     /**
@@ -64,7 +39,7 @@ class Contract implements \JsonSerializable
     }
 
     /**
-     * @param array $scheme
+     * @param array $schemes
      * @return Contract
      */
     public function setSchemes(array $schemes): Contract
@@ -94,8 +69,7 @@ class Contract implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'name' => $this->getName(),
-            'schemes' => $this->getScheme(),
+            'schemes' => $this->getSchemes(),
             'service' => $this->getService(),
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\SchemeStorage;
+namespace App\Service\SchemeService;
 
 class Service implements \JsonSerializable
 {
@@ -23,9 +23,8 @@ class Service implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'name' => $this->getType(),
-            'in' => $this->isIn(),
-            'scheme' => $this->getScheme(),
+            'name' => $this->getName(),
+            'address' => $this->getAddress(),
         ];
     }
 

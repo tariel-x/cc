@@ -33,41 +33,18 @@ class SchemeService
      *
      * @param array $schemes
      * @param array $service
-     * @param string $name
      * @return bool
      */
-    public function register(array $schemes, array $service, string $name): bool
+    public function register(array $schemes, array $service): bool
     {
-        $contract = new Contract($name, $this->makeSchemes($schemes), $this->makeService($service));
-        return $this->getStorage()->save($contract);
+        $contract = (new ContractBuilder())->build($schemes, $service);
+        $model = (new ModelBuilder())->createContractModel($contract);
+        return $this->getStorage()->save($model);
     }
 
-    public function getContracts(string $name): ?array
+    public function getAll(): array
     {
-        $contracts = $this->getStorage()->get($name);
-        return array_map(function (Contract $contract) {
-            return $contract->getSchemes();
-        }, $contracts);
-    }
-
-    /**
-     * @param array $schemes
-     * @return Scheme[]
-     */
-    private function makeSchemes(array $schemes): array
-    {
-        return array_map(function (array $item) {
-            return new Scheme(
-                (bool)$item['in'],
-                $item['scheme'],
-                (string)$item['type']
-            );
-        }, $schemes);
-    }
-
-    private function makeService(array $service): Service
-    {
-        return new Service($service['name'], $service['address']);
+        return (array)$this->getStorage()->getAll();
     }
 
     /**

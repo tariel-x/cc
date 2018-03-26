@@ -31,21 +31,16 @@ class Handlers
     /**
      * @param array $scheme
      * @param array $service
-     * @param string $name
      * @return bool
      */
-    public function register(array $scheme, array $service, string $name): bool
+    public function register(array $scheme, array $service): bool
     {
-        return $this->getService()->register($scheme, $service, $name);
+        return $this->getService()->register($scheme, $service);
     }
 
-    /**
-     * @param string $name
-     * @return array
-     */
-    public function getSchemes(string $name): array
+    public function getAll(): array
     {
-        return $this->getService()->getContracts($name);
+        return $this->getService()->getAll();
     }
 
     public function resolve(array $contract): array

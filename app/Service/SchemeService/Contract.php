@@ -24,7 +24,7 @@ class Contract implements \JsonSerializable
      * @param array $schemes
      * @param array $service
      */
-    public function __construct(array $schemes, array $service)
+    public function __construct(array $schemes, Service $service)
     {
         $this->schemes = $schemes;
         $this->service = $service;

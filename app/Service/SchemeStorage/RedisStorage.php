@@ -1,9 +1,8 @@
 <?php
 namespace App\Service\SchemeStorage;
 
-use App\Service\SchemeService\Contract;
-use App\Service\SchemeService\Scheme;
-use App\Service\SchemeService\Service;
+use App\Service\SchemeStorage\Models\Contract;
+use App\Service\SchemeService\ModelBuilder;
 
 class RedisStorage implements SchemeStorageInterface
 {
@@ -41,66 +40,21 @@ class RedisStorage implements SchemeStorageInterface
      */
     public function save(Contract $contract): bool
     {
-        $hash = $this->hash($contract->getScheme());
-        $value = $this->redis->get($hash);
-        if ($value === false) {
-            $this->addIndex($contract);
-        } else {
-            $this->updateIndex($contract);
-        }
-        printf("New hash %s\n", $hash);
-        return true;
-    }
-
-    /**
-     * Build scheme index
-     *
-     * @param Contract $contract
-     */
-    private function addIndex(Contract $contract)
-    {
-        $hash = $this->hash($contract->getScheme());
+        $hash = $this->hash($contract->getSchemes());
         $rawContract = (array)$contract;
-        //make array of services for internal view
-        if (!empty($rawContract['service'])) {
-            $rawContract['service'] = [$rawContract['service']];
-        } else {
-            $rawContract['service'] = [];
-        }
         $this->redis->set($hash, json_encode($rawContract));
-    }
-
-    private function updateIndex(Contract $contract)
-    {
-        $hash = $this->hash($contract->getScheme());
-        $value = json_decode($this->redis->get($hash), true);
-        $value['service'][] = $contract->getService();
-        $this->redis->set($hash, json_encode($value));
+        return true;
     }
 
     /**
      * make scheme hash
      *
-     * @param array $contract
+     * @param array $data
      * @return string
      */
-    private function hash(array $contract): string
+    private function hash(array $data): string
     {
-        return md5(json_encode($contract));
-    }
-
-    /**
-     * Get contracts by name
-     *
-     * @param string $name
-     * @return Contract[]
-     */
-    public function get(string $name): array
-    {
-        if (!array_key_exists($name, $this->contracts)) {
-            return [];
-        }
-        return $this->contracts[$name];
+        return md5(json_encode($data));
     }
 
     /**
@@ -110,9 +64,14 @@ class RedisStorage implements SchemeStorageInterface
      */
     public function getAll(): array
     {
-        return array_reduce($this->contracts, function (array $carry, array $item) {
-            return array_merge($carry, array_values($item));
-        }, []);
+        $builder = new ModelBuilder();
+        $keys = $this->redis->keys('*');
+        $data = array_map(function (string $key) {
+            return json_decode($this->redis->get($key), true);
+        }, $keys);
+        return array_map(function ($item) use ($builder) {
+            return $builder->modelFromRaw($item);
+        }, $data);
     }
 
     /**

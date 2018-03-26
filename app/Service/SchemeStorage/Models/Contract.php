@@ -1,5 +1,5 @@
 <?php
-namespace App\Service\SchemeStorage\Model;
+namespace App\Service\SchemeStorage\Models;
 
 /**
  * Class Contract
@@ -31,7 +31,7 @@ class Contract implements \JsonSerializable
      */
     public function __construct(array $schemes, array $services)
     {
-        $this->scheme = $scheme;
+        $this->schemes = $schemes;
         $this->services = $services;
     }
 
@@ -74,7 +74,6 @@ class Contract implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'name' => $this->getName(),
             'schemes' => $this->getSchemes(),
             'services' => $this->getServices(),
         ];

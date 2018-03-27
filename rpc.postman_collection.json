@@ -1,0 +1,126 @@
+{
+	"info": {
+		"name": "rpc",
+		"_postman_id": "020ea06e-84b3-24f1-cd4e-8b29a04462e7",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"register\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"bbb\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"test123\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8883/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8883",
+					"path": [
+						"rpc"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get contracts",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"getAll\", \n\t\"params\": {}, \n\t\"id\": 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8883/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8883",
+					"path": [
+						"rpc"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "find contract",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"get\",\n  \"params\": {\n    \"schemes\": [\n      {\n        \"type\": \"none\",\n        \"in\": true,\n        \"scheme\": [\n          \"bbb\"\n        ]\n      }\n    ]\n  },\n  \"id\": 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8883/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8883",
+					"path": [
+						"rpc"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "remove",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"remove\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"bbb\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"test123\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8883/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8883",
+					"path": [
+						"rpc"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

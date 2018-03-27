@@ -21,6 +21,7 @@ $logger->info('Connected redis');
 $schemeStorage = new \App\Service\SchemeStorage\RedisStorage($redis);
 $schemeStorage->setLogger($logger);
 $schemeService = new \App\Service\SchemeService\SchemeService($schemeStorage);
+$schemeService->setLogger($logger);
 $handlers = new \App\Service\RPC\Handlers($schemeService);
 $jsonrpc = new \App\Service\RPC\JsonRPC($handlers);
 

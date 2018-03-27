@@ -3,9 +3,13 @@ namespace App\Service\SchemeService;
 
 use App\Service\SchemeStorage\SchemeStorageInterface;
 use App\Service\SchemeStorage\Models\Contract as ContractModel;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 class SchemeService
 {
+    use LoggerAwareTrait;
+    
     /**
      * @var SchemeStorageInterface
      */
@@ -19,6 +23,7 @@ class SchemeService
     public function __construct(SchemeStorageInterface $storage)
     {
         $this->storage = $storage;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -38,12 +43,13 @@ class SchemeService
      */
     public function register(array $schemes, array $service): bool
     {
-        
-        $existing = $this->get($schemes);
         $contract = (new ContractBuilder())->build($schemes, $service);
+        $existing = $this->getStorage()->get($schemes);
         if ($existing !== null) {
+            $this->logger->debug('Contract exists, updating');
             return $this->registerExisting($existing, $contract);
         }
+        $this->logger->debug('New contract');
         return $this->registerNew($contract);
     }
 

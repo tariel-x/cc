@@ -73,8 +73,10 @@ class RedisStorage implements SchemeStorageInterface
         $hash = $this->hash($schemes);
         $data = $this->redis->get($hash);
         if ($data === false) {
+            $this->logger->debug(sprintf("No contracts found with hash `%s`", $hash));
             return null;
         }
+        $this->logger->debug(sptrintf("Contract found with hash `%s`", $hash));
         return (new ModelBuilder())->modelFromRaw(json_decode($data, true));
     }
 

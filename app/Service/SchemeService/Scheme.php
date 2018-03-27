@@ -110,7 +110,6 @@ class Scheme implements \JsonSerializable
     {
         return [
             'type' => $this->getType(),
-            'priority' => $this->getPriority(),
             'in' => $this->isIn(),
             'scheme' => $this->getScheme(),
         ];

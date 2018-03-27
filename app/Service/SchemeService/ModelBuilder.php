@@ -27,4 +27,14 @@ class ModelBuilder
     {
         $model->addService($contract->getService()->jsonSerialize());
     }
+
+    public function removeService(ContractModel $model, Contract $contract)
+    {
+        $removeHash = md5(json_encode($contract->getService()->jsonSerialize()));
+        $services = array_filter($model->getServices(), function (array $service) use ($removeHash) {
+            $hash = md5(json_encode($service));
+            return $hash !== $removeHash;
+        });
+        $model->setServices($services);
+    }
 }

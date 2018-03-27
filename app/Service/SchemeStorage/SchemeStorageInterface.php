@@ -31,4 +31,12 @@ interface SchemeStorageInterface
      * @return Contract
      */
     public function get(array $schemes): ?Contract;
+
+    /**
+     * Remove contract
+     *
+     * @param array $schemes
+     * @return boolean
+     */
+    public function remove(array $schemes): bool;
 }

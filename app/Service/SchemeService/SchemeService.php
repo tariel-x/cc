@@ -40,6 +40,7 @@ class SchemeService
     {
         
         $existing = $this->get($schemes);
+        $contract = (new ContractBuilder())->build($schemes, $service);
         if ($existing !== null) {
             return $this->registerExisting($existing, $contract);
         }
@@ -70,6 +71,15 @@ class SchemeService
 
     public function remove(array $schemes, array $service)
     {
-        //todo call remove service from services list of contract
+        $existing = $this->get($schemes);
+        if ($existing === null) {
+            return;
+        }
+        $contract = (new ContractBuilder())->build($schemes, $service);
+        $existing = (new ModelBuilder())->removeService($existing, $contract);
+        if (empty($existing->getServices())) {
+            return $this->getStorage()->remove($schemes);
+        }
+        return $this->getStorage()->save($existing);
     }
 }

@@ -71,4 +71,10 @@ class RedisStorage implements SchemeStorageInterface
         }
         return (new ModelBuilder())->modelFromRaw(json_decode($data, true));
     }
+
+    public function remove(array $schemes)
+    {
+        $hash = $this->hash($schemes);
+        return $this->redis->del($hash);
+    }
 }

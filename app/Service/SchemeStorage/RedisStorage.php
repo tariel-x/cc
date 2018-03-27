@@ -35,6 +35,7 @@ class RedisStorage implements SchemeStorageInterface
     {
         $hash = $this->hash($contract->getSchemes());
         $rawContract = $contract->jsonSerialize();
+        array_multisort($rawContract);
         $this->redis->set($hash, json_encode($rawContract));
         $this->logger->debug(sprintf('Setted contract with hash `%s`', $hash));
         return true;
@@ -48,7 +49,8 @@ class RedisStorage implements SchemeStorageInterface
      */
     private function hash(array $data): string
     {
-        return self::CONTRACT_PREFIX . md5(json_encode(array_multisort($data)));
+        (new \App\Service\Helper())->sort($data);
+        return self::CONTRACT_PREFIX . md5(json_encode($data));
     }
 
     /**

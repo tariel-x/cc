@@ -61,7 +61,7 @@ class SchemeService
 
     private function registerExisting(ContractModel $model, Contract $contract): bool
     {
-        $model = (new ModelBuilder())->appendService($model, $contract);
+        (new ModelBuilder())->appendService($model, $contract);
         return $this->getStorage()->save($model);
     }
 

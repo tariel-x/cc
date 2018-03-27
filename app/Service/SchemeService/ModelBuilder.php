@@ -25,16 +25,33 @@ class ModelBuilder
 
     public function appendService(ContractModel $model, Contract $contract)
     {
-        $model->addService($contract->getService()->jsonSerialize());
+        $rawNewService = $contract->getService()->jsonSerialize();
+        $newHash = $this->hash($rawNewService);
+
+        $hashes = array_map(function (array $service) {
+            return $this->hash($service);
+        }, $model->getServices());
+
+        if (in_array($newHash, $hashes)) {
+            return;
+        }
+
+        $model->addService($rawNewService);
     }
 
     public function removeService(ContractModel $model, Contract $contract)
     {
-        $removeHash = md5(json_encode(array_multisort($contract->getService()->jsonSerialize())));
+        $removeHash = $this->hash($contract->getService()->jsonSerialize());
         $services = array_filter($model->getServices(), function (array $service) use ($removeHash) {
-            $hash = md5(json_encode(array_multisort($service)));
+            $hash = $this->hash($service);
             return $hash !== $removeHash;
         });
         $model->setServices($services);
+    }
+
+    private function hash(array $data): string
+    {
+        (new \App\Service\Helper())->sort($data);
+        return md5(json_encode($data));
     }
 }

@@ -68,57 +68,8 @@ class SchemeService
         return $this->getStorage()->get($schemes);
     }
 
-    /**
-     * Get service names resolving contract
-     *
-     * @param array $schemas
-     * @return array
-     */
-    public function resolveContract(array $schemas): array
+    public function remove(array $schemes, array $service)
     {
-        $models = $this->makeSchemes($schemas);
-        $contracts = $this->getStorage()->getAll();
-
-        $contracts = array_filter($contracts, function (Contract $contract) use ($models) {
-            return $this->compareSchemaQueue($contract->getScheme(), $models);
-        });
-
-        return array_map(function (Contract $contract) {
-            return $contract->getService();
-        }, $contracts);
-    }
-
-    /**
-     * Compares
-     * @param Scheme[] $schemes1
-     * @param Scheme[] $schemes2
-     * @return bool
-     */
-    private function compareSchemaQueue(array $schemes1, array $schemes2): bool
-    {
-        if ($this->compareByHash($schemes1, $schemes2)) {
-            return true;
-        }
-        //todo another check
-        return false;
-    }
-
-    /**
-     * @param Scheme[] $schemes1
-     * @param Scheme[] $schemes2
-     * @return bool
-     */
-    private function compareByHash(array $schemes1, array $schemes2): bool
-    {
-        $hashes1 = array_map(function (Scheme $scheme) {
-            return md5(json_encode($scheme));
-        }, $schemes1);
-        $hashes2 = array_map(function (Scheme $scheme) {
-            return md5(json_encode($scheme));
-        }, $schemes2);
-        if (count(array_diff($hashes1, $hashes2)) === 0) {
-            return true;
-        }
-        return false;
+        //todo call remove service from services list of contract
     }
 }

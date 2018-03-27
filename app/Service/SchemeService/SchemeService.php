@@ -38,23 +38,24 @@ class SchemeService
      */
     public function register(array $schemes, array $service): bool
     {
+        
         $existing = $this->get($schemes);
         if ($existing !== null) {
-            //call register existing
+            return $this->registerExisting($existing, $contract);
         }
         return $this->registerNew($schemes, $service);
     }
 
-    private function registerNew(array $schemes, array $service): bool
+    private function registerNew(Contract $contract): bool
     {
-        $contract = (new ContractBuilder())->build($schemes, $service);
         $model = (new ModelBuilder())->createContractModel($contract);
         return $this->getStorage()->save($model);
     }
 
     private function registerExisting(ContractModel $model, Contract $contract): bool
     {
-        return (new ModelBuilder())->appendService($model, $contract);
+        $model = (new ModelBuilder())->appendService($model, $contract);
+        return $this->getStorage()->save($model);
     }
 
     public function getAll(): array

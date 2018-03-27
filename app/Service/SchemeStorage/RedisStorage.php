@@ -6,6 +6,8 @@ use App\Service\SchemeService\ModelBuilder;
 
 class RedisStorage implements SchemeStorageInterface
 {
+    const CONTRACT_PREFIX = 'contract_';
+
     /**
      * redis
      *
@@ -40,7 +42,7 @@ class RedisStorage implements SchemeStorageInterface
      */
     private function hash(array $data): string
     {
-        return md5(json_encode($data));
+        return CONTRACT_PREFIX . md5(json_encode($data));
     }
 
     /**

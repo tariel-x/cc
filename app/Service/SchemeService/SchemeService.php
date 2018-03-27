@@ -2,6 +2,7 @@
 namespace App\Service\SchemeService;
 
 use App\Service\SchemeStorage\SchemeStorageInterface;
+use App\Service\SchemeStorage\Models\Contract as ContractModel;
 
 class SchemeService
 {
@@ -37,9 +38,23 @@ class SchemeService
      */
     public function register(array $schemes, array $service): bool
     {
+        $existing = $this->get($schemes);
+        if ($existing !== null) {
+            //call register existing
+        }
+        return $this->registerNew($schemes, $service);
+    }
+
+    private function registerNew(array $schemes, array $service): bool
+    {
         $contract = (new ContractBuilder())->build($schemes, $service);
         $model = (new ModelBuilder())->createContractModel($contract);
         return $this->getStorage()->save($model);
+    }
+
+    private function registerExisting(ContractModel $model, Contract $contract): bool
+    {
+        return (new ModelBuilder())->appendService($model, $contract);
     }
 
     public function getAll(): array
@@ -50,17 +65,6 @@ class SchemeService
     public function get(array $schemes)
     {
         return $this->getStorage()->get($schemes);
-    }
-
-    /**
-     * Unregister service
-     *
-     * @param string $name
-     * @return bool
-     */
-    public function forgetService(string $name): bool
-    {
-        return $this->getStorage()->removeContracts($name);
     }
 
     /**

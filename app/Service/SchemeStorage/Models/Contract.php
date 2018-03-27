@@ -71,6 +71,18 @@ class Contract implements \JsonSerializable
         return $this;
     }
 
+    /**
+     * Append service to services list
+     *
+     * @param array $service
+     * @return Contract
+     */
+    public function addService(array $service): Contract
+    {
+        $this->services[] = $service;
+        return $this;
+    }
+
     public function jsonSerialize()
     {
         return [

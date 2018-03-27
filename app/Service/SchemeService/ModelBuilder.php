@@ -22,4 +22,9 @@ class ModelBuilder
     {
         return new ContractModel($data['schemes'], $data['services']);
     }
+
+    public function appendService(ContractModel $model, Contract $contract)
+    {
+        $model->addService($contract->getService()->jsonSerialize());
+    }
 }

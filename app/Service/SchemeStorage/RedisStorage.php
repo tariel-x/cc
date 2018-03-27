@@ -7,20 +7,6 @@ use App\Service\SchemeService\ModelBuilder;
 class RedisStorage implements SchemeStorageInterface
 {
     /**
-     * schemas storage
-     *
-     * @var array
-     */
-    private $contracts = [];
-
-    /**
-     * scheme index
-     *
-     * @var array
-     */
-    private $index = [];
-
-    /**
      * redis
      *
      * @var \Redis

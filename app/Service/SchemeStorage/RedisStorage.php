@@ -3,9 +3,13 @@ namespace App\Service\SchemeStorage;
 
 use App\Service\SchemeStorage\Models\Contract;
 use App\Service\SchemeService\ModelBuilder;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 class RedisStorage implements SchemeStorageInterface
 {
+    use LoggerAwareTrait;
+
     const CONTRACT_PREFIX = 'contract_';
 
     /**
@@ -18,6 +22,7 @@ class RedisStorage implements SchemeStorageInterface
     public function __construct($redis)
     {
         $this->redis = $redis;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -31,6 +36,7 @@ class RedisStorage implements SchemeStorageInterface
         $hash = $this->hash($contract->getSchemes());
         $rawContract = $contract->jsonSerialize();
         $this->redis->set($hash, json_encode($rawContract));
+        $this->logger->debug(sprintf('Setted contract with hash `%s`', $hash));
         return true;
     }
 

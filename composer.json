@@ -9,7 +9,8 @@
     ],
     "require": {
         "symfony/routing": "^4.0",
-        "react/http": "^0.7.4"
+        "react/http": "^0.7.4",
+        "wyrihaximus/react-psr-3-stdio": "^2.1"
     },
     "autoload": {
         "psr-4": {

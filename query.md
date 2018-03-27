@@ -8,7 +8,6 @@
 		"scheme": [
 			{
 				"in": true,
-        "priority": 0,
 				"scheme": ["bbb"],
 				"type": "none"
 			}

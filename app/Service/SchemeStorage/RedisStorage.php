@@ -42,7 +42,7 @@ class RedisStorage implements SchemeStorageInterface
      */
     private function hash(array $data): string
     {
-        return CONTRACT_PREFIX . md5(json_encode($data));
+        return self::CONTRACT_PREFIX . md5(json_encode($data));
     }
 
     /**
@@ -72,7 +72,7 @@ class RedisStorage implements SchemeStorageInterface
         return (new ModelBuilder())->modelFromRaw(json_decode($data, true));
     }
 
-    public function remove(array $schemes)
+    public function remove(array $schemes): bool
     {
         $hash = $this->hash($schemes);
         return $this->redis->del($hash);

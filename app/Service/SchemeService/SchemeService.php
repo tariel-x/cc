@@ -44,7 +44,7 @@ class SchemeService
         if ($existing !== null) {
             return $this->registerExisting($existing, $contract);
         }
-        return $this->registerNew($schemes, $service);
+        return $this->registerNew($contract);
     }
 
     private function registerNew(Contract $contract): bool

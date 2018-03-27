@@ -62,4 +62,14 @@ class Handlers
     {
         return $this->getService()->get($schemes);
     }
+
+    public function registerDependency(array $schemes, array $service)
+    {
+        //todo save dependencies
+    }
+
+    public function getContractUsage(array $schemes)
+    {
+        //todo search over dependencies
+    }
 }

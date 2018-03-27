@@ -12,6 +12,8 @@ class RedisStorage implements SchemeStorageInterface
 
     const CONTRACT_PREFIX = 'contract_';
 
+    const DEPENDENCY_PREFIX = 'dep_';
+
     /**
      * redis
      *
@@ -33,7 +35,7 @@ class RedisStorage implements SchemeStorageInterface
      */
     public function save(Contract $contract): bool
     {
-        $hash = $this->hash($contract->getSchemes());
+        $hash = $this->hash($contract->getSchemes(), self::CONTRACT_PREFIX);
         $rawContract = $contract->jsonSerialize();
         (new \App\Service\Helper())->sort($rawContract);
         $this->redis->set($hash, json_encode($rawContract));
@@ -47,10 +49,10 @@ class RedisStorage implements SchemeStorageInterface
      * @param array $data
      * @return string
      */
-    private function hash(array $data): string
+    private function hash(array $data, string $prefix): string
     {
         (new \App\Service\Helper())->sort($data);
-        return self::CONTRACT_PREFIX . md5(json_encode($data));
+        return $prefix . md5(json_encode($data));
     }
 
     /**
@@ -60,8 +62,13 @@ class RedisStorage implements SchemeStorageInterface
      */
     public function getAll(): array
     {
+        return $this->getAllModels(self::CONTRACT_PREFIX);
+    }
+
+    private function getAllModels(string $prefix): array
+    {
         $builder = new ModelBuilder();
-        $keys = $this->redis->keys('*');
+        $keys = $this->redis->keys($prefix . '*');
         $data = array_map(function (string $key) {
             return json_decode($this->redis->get($key), true);
         }, $keys);
@@ -72,7 +79,7 @@ class RedisStorage implements SchemeStorageInterface
 
     public function get(array $schemes): ?Contract
     {
-        $hash = $this->hash($schemes);
+        $hash = $this->hash($schemes, self::CONTRACT_PREFIX);
         $data = $this->redis->get($hash);
         if ($data === false) {
             $this->logger->debug(sprintf("No contracts found with hash `%s`", $hash));
@@ -84,7 +91,12 @@ class RedisStorage implements SchemeStorageInterface
 
     public function remove(array $schemes): bool
     {
-        $hash = $this->hash($schemes);
+        $hash = $this->hash($schemes, self::CONTRACT_PREFIX);
         return $this->redis->del($hash);
+    }
+
+    public function getAllDependecies(): array
+    {
+        return $this->getAllModels(self::DEPENDENCY_PREFIX);
     }
 }

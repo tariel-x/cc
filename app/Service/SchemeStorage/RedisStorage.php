@@ -48,7 +48,7 @@ class RedisStorage implements SchemeStorageInterface
      */
     private function hash(array $data): string
     {
-        return self::CONTRACT_PREFIX . md5(json_encode($data));
+        return self::CONTRACT_PREFIX . md5(json_encode(array_multisort($data)));
     }
 
     /**
@@ -76,7 +76,7 @@ class RedisStorage implements SchemeStorageInterface
             $this->logger->debug(sprintf("No contracts found with hash `%s`", $hash));
             return null;
         }
-        $this->logger->debug(sptrintf("Contract found with hash `%s`", $hash));
+        $this->logger->debug(sprintf("Contract found with hash `%s`", $hash));
         return (new ModelBuilder())->modelFromRaw(json_decode($data, true));
     }
 

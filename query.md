@@ -5,7 +5,7 @@
 	"jsonrpc": "2.0", 
 	"method": "register", 
 	"params": {
-		"scheme": [
+		"schemes": [
 			{
 				"in": true,
 				"scheme": ["bbb"],
@@ -50,5 +50,28 @@
     ]
   },
   "id": 1
+}
+```
+
+## Remove
+
+```json
+{
+	"jsonrpc": "2.0", 
+	"method": "remove", 
+	"params": {
+		"schemes": [
+			{
+				"in": true,
+				"scheme": ["bbb"],
+				"type": "none"
+			}
+		],
+		"service": {
+			"name": "test",
+			"address": []
+		}
+	}, 
+	"id": 1
 }
 ```

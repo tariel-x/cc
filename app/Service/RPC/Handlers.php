@@ -17,6 +17,16 @@ class Handlers
     }
 
     /**
+     * Get the value of service
+     *
+     * @return SchemeService
+     */ 
+    public function getService()
+    {
+        return $this->service;
+    }
+
+    /**
      * status function
      *
      * @return array
@@ -33,9 +43,14 @@ class Handlers
      * @param array $service
      * @return bool
      */
-    public function register(array $scheme, array $service): bool
+    public function register(array $schemes, array $service): bool
     {
-        return $this->getService()->register($scheme, $service);
+        return $this->getService()->register($schemes, $service);
+    }
+
+    public function remove(array $schemes, array $service): bool
+    {
+        return $this->getService()->remove($schemes, $service);
     }
 
     public function getAll(): array
@@ -46,20 +61,5 @@ class Handlers
     public function get(array $schemes)
     {
         return $this->getService()->get($schemes);
-    }
-
-    public function resolve(array $contract): array
-    {
-        return $this->getService()->resolveContract($contract);
-    }
-
-    /**
-     * Get the value of service
-     *
-     * @return SchemeService
-     */ 
-    public function getService()
-    {
-        return $this->service;
     }
 }

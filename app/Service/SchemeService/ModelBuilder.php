@@ -23,7 +23,7 @@ class ModelBuilder
         return new ContractModel($data['schemes'], $data['services']);
     }
 
-    public function appendService(ContractModel $model, Contract $contract)
+    public function appendService(ContractModel $model, Contract $contract): ContractModel
     {
         $rawNewService = $contract->getService()->jsonSerialize();
         $newHash = $this->hash($rawNewService);
@@ -33,13 +33,14 @@ class ModelBuilder
         }, $model->getServices());
 
         if (in_array($newHash, $hashes)) {
-            return;
+            return $model;
         }
 
         $model->addService($rawNewService);
+        return $model;
     }
 
-    public function removeService(ContractModel $model, Contract $contract)
+    public function removeService(ContractModel $model, Contract $contract): ContractModel
     {
         $removeHash = $this->hash($contract->getService()->jsonSerialize());
         $services = array_filter($model->getServices(), function (array $service) use ($removeHash) {
@@ -47,6 +48,7 @@ class ModelBuilder
             return $hash !== $removeHash;
         });
         $model->setServices($services);
+        return $model;
     }
 
     private function hash(array $data): string

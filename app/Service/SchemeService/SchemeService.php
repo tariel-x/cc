@@ -75,11 +75,11 @@ class SchemeService
         return $this->getStorage()->get($schemes);
     }
 
-    public function remove(array $schemes, array $service)
+    public function remove(array $schemes, array $service): bool
     {
         $existing = $this->get($schemes);
         if ($existing === null) {
-            return;
+            return true;
         }
         $contract = (new ContractBuilder())->build($schemes, $service);
         $existing = (new ModelBuilder())->removeService($existing, $contract);

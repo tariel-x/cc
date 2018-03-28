@@ -44,7 +44,7 @@ class SchemeService
     public function register(array $schemes, array $service): bool
     {
         $contract = (new ContractBuilder())->build($schemes, $service);
-        $existing = $this->getStorage()->get($schemes);
+        $existing = $this->getStorage()->getContract($schemes);
         if ($existing !== null) {
             $this->logger->debug('Contract exists, updating');
             return $this->registerExisting($existing, $contract);
@@ -56,36 +56,36 @@ class SchemeService
     private function registerNew(Contract $contract): bool
     {
         $model = (new ModelBuilder())->createContractModel($contract);
-        return $this->getStorage()->save($model);
+        return $this->getStorage()->saveContract($model);
     }
 
     private function registerExisting(ContractModel $model, Contract $contract): bool
     {
         (new ModelBuilder())->appendService($model, $contract);
-        return $this->getStorage()->save($model);
+        return $this->getStorage()->saveContract($model);
     }
 
     public function getAll(): array
     {
-        return (array)$this->getStorage()->getAll();
+        return (array)$this->getStorage()->getAllContracts();
     }
 
     public function get(array $schemes)
     {
-        return $this->getStorage()->get($schemes);
+        return $this->getStorage()->getContract($schemes);
     }
 
     public function remove(array $schemes, array $service): bool
     {
-        $existing = $this->get($schemes);
+        $existing = $this->getContract($schemes);
         if ($existing === null) {
             return true;
         }
         $contract = (new ContractBuilder())->build($schemes, $service);
         $existing = (new ModelBuilder())->removeService($existing, $contract);
         if (empty($existing->getServices())) {
-            return $this->getStorage()->remove($schemes);
+            return $this->getStorage()->removeContract($schemes);
         }
-        return $this->getStorage()->save($existing);
+        return $this->getStorage()->saveContract($existing);
     }
 }

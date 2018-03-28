@@ -50,7 +50,7 @@ class ModelBuilder
         return $model;
     }
 
-    private function serviceExists(array $services, array $rawNewService): ContractModel
+    private function serviceExists(array $services, array $rawNewService): bool
     {
         $newHash = $this->hash($rawNewService);
         $hashes = array_map(function (array $service) {
@@ -77,7 +77,7 @@ class ModelBuilder
         return $model;
     }
 
-    private function removeServiceItem(array $serivces, array $rawNewService): ContractModel
+    private function removeServiceItem(array $serivces, array $rawNewService): array
     {
         $removeHash = $this->hash($rawNewService);
         return array_filter($serivces, function (array $service) use ($removeHash) {

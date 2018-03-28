@@ -92,7 +92,7 @@ class SchemeService
 
     public function removeContract(array $schemes, array $service): bool
     {
-        $existing = $this->getContract($schemes);
+        $existing = $this->getStorage()->getContract($schemes);
         if ($existing === null) {
             return true;
         }
@@ -103,7 +103,7 @@ class SchemeService
 
     public function removeUsage(array $schemes, array $service): bool
     {
-        $existing = $this->getContract($schemes);
+        $existing = $this->getStorage()->getContract($schemes);
         if ($existing === null) {
             return true;
         }

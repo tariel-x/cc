@@ -21,7 +21,12 @@ class Contract implements \JsonSerializable
     /**
      * @var array
      */
-    private $services;
+    private $services = [];
+
+    /**
+     * @var array
+     */
+    private $usages = [];
 
     /**
      * Contract constructor.
@@ -29,10 +34,9 @@ class Contract implements \JsonSerializable
      * @param array $scheme
      * @param array $services
      */
-    public function __construct(array $schemes, array $services)
+    public function __construct(array $schemes)
     {
         $this->schemes = $schemes;
-        $this->services = $services;
     }
 
     /**
@@ -80,6 +84,23 @@ class Contract implements \JsonSerializable
     public function addService(array $service): Contract
     {
         $this->services[] = $service;
+        return $this;
+    }
+
+    public function getUsages(): array
+    {
+        return $this->usages;
+    }
+
+    public function setUsages(array $usages): Contract
+    {
+        $this->usages = $usages;
+        return $this;
+    }
+
+    public function addUsage(array $usage): Contract
+    {
+        $this->usages[] = $usage;
         return $this;
     }
 

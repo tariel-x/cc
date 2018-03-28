@@ -58,7 +58,7 @@ class RedisStorage implements SchemeStorageInterface
         return $this->remove($schemes, self::CONTRACT_PREFIX);
     }
 
-    public function getAllDependecies(): array
+    public function getAllDependencies(): array
     {
         return $this->getAll(self::DEPENDENCY_PREFIX);
     }

@@ -19,15 +19,19 @@ class Contract implements \JsonSerializable
     private $service;
 
     /**
+     * @var Service
+     */
+    private $usage;
+
+    /**
      * Contract constructor.
      *
      * @param array $schemes
      * @param array $service
      */
-    public function __construct(array $schemes, Service $service)
+    public function __construct(array $schemes)
     {
         $this->schemes = $schemes;
-        $this->service = $service;
     }
 
     /**
@@ -49,18 +53,18 @@ class Contract implements \JsonSerializable
     }
 
     /**
-     * @return Service
+     * @return Service|null
      */
-    public function getService(): Service
+    public function getService(): ?Service
     {
         return $this->service;
     }
 
     /**
-     * @param Service $service
+     * @param Service|null $service
      * @return Contract
      */
-    public function setService(Service $service): Contract
+    public function setService(?Service $service): Contract
     {
         $this->service = $service;
         return $this;
@@ -71,6 +75,30 @@ class Contract implements \JsonSerializable
         return [
             'schemes' => $this->getSchemes(),
             'service' => $this->getService(),
+            'usage'   => $this->getUsage(),
         ];
+    }
+
+    /**
+     * Get the value of usage
+     *
+     * @return  Service|null
+     */ 
+    public function getUsage(): ?Service
+    {
+        return $this->usage;
+    }
+
+    /**
+     * Set the value of usage
+     *
+     * @param  Service|null  $usage
+     *
+     * @return  self
+     */ 
+    public function setUsage(?Service $usage): Contract
+    {
+        $this->usage = $usage;
+        return $this;
     }
 }

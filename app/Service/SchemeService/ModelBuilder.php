@@ -12,43 +12,78 @@ class ModelBuilder
             return $scheme->jsonSerialize();
         }, $contract->getSchemes());
 
-        return new ContractModel(
-            $schemes,
-            [$contract->getService()->jsonSerialize()]
-        );
+        $model = new ContractModel($schemes);
+        if ($contract->getService() !== null) {
+            $model->addService($contract->getService()->jsonSerialize());
+        }
+        if ($contract->getUsage() !== null) {
+            $model->addUsage($contract->getUsage()->jsonSerialize());
+        }
+        return $model;
     }
 
     public function modelFromRaw(array $data): ContractModel
     {
-        return new ContractModel($data['schemes'], $data['services']);
+        $model = new ContractModel($data['schemes']);
+        $model->setServices($data['services']);
+        $model->setUsages($data['usages']);
+        return $model;
     }
 
     public function appendService(ContractModel $model, Contract $contract): ContractModel
     {
         $rawNewService = $contract->getService()->jsonSerialize();
-        $newHash = $this->hash($rawNewService);
-
-        $hashes = array_map(function (array $service) {
-            return $this->hash($service);
-        }, $model->getServices());
-
-        if (in_array($newHash, $hashes)) {
+        if ($this->serviceExists($model->getServices(), $rawNewService)) {
             return $model;
         }
-
         $model->addService($rawNewService);
         return $model;
     }
 
+    public function appendUsage(ContractModel $model, Contract $contract): ContractModel
+    {
+        $rawNewService = $contract->getUsage()->jsonSerialize();
+        if ($this->serviceExists($model->getUsages(), $rawNewService)) {
+            return $model;
+        }
+        $model->addUsage($rawNewService);
+        return $model;
+    }
+
+    private function serviceExists(array $services, array $rawNewService): ContractModel
+    {
+        $newHash = $this->hash($rawNewService);
+        $hashes = array_map(function (array $service) {
+            return $this->hash($service);
+        }, $services);
+
+        if (in_array($newHash, $hashes)) {
+            return true;
+        }
+        return false;
+    }
+
     public function removeService(ContractModel $model, Contract $contract): ContractModel
     {
-        $removeHash = $this->hash($contract->getService()->jsonSerialize());
-        $services = array_filter($model->getServices(), function (array $service) use ($removeHash) {
+        $services = $this->removeServiceItem($model->getServices(), $contract->getService()->jsonSerialize());
+        $model->setServices($services);
+        return $model;
+    }
+
+    public function removeUsage(ContractModel $model, Contract $contract): ContractModel
+    {
+        $services = $this->removeServiceItem($model->getServices(), $contract->getService()->jsonSerialize());
+        $model->setServices($services);
+        return $model;
+    }
+
+    private function removeServiceItem(array $serivces, array $rawNewService): ContractModel
+    {
+        $removeHash = $this->hash($rawNewService);
+        return array_filter($serivces, function (array $service) use ($removeHash) {
             $hash = $this->hash($service);
             return $hash !== $removeHash;
         });
-        $model->setServices($services);
-        return $model;
     }
 
     private function hash(array $data): string

@@ -39,35 +39,4 @@ interface SchemeStorageInterface
      * @return boolean
      */
     public function removeContract(array $schemes): bool;
-
-
-    /**
-     * Save dependency
-     * @param Contract $contract
-     * @return bool
-     */
-    public function saveDependency(Contract $contract): bool;
-
-    /**
-     * Get all dependencies
-     *
-     * @return Contract[]
-     */
-    public function getAllDependencies(): array;
-
-    /**
-     * Get dependency by scheme
-     *
-     * @param array $schemes
-     * @return Contract
-     */
-    public function getDependency(array $schemes): ?Contract;
-
-    /**
-     * Remove dependency
-     *
-     * @param array $schemes
-     * @return boolean
-     */
-    public function removeDependency(array $schemes): bool;
 }

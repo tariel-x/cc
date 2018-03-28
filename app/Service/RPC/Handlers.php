@@ -43,14 +43,14 @@ class Handlers
      * @param array $service
      * @return bool
      */
-    public function register(array $schemes, array $service): bool
+    public function registerContract(array $schemes, array $service): bool
     {
-        return $this->getService()->register($schemes, $service);
+        return $this->getService()->registerContract($schemes, $service);
     }
 
-    public function remove(array $schemes, array $service): bool
+    public function removeContract(array $schemes, array $service): bool
     {
-        return $this->getService()->remove($schemes, $service);
+        return $this->getService()->removeContract($schemes, $service);
     }
 
     public function getAll(): array
@@ -63,13 +63,13 @@ class Handlers
         return $this->getService()->get($schemes);
     }
 
-    public function registerDependency(array $schemes, array $service)
+    public function registerUsage(array $schemes, array $service)
     {
-        //todo save dependencies
+        return $this->getService()->registerUsage($schemes, $service);
     }
 
-    public function getContractUsage(array $schemes)
+    public function removeUsage(array $schemes, array $service)
     {
-        //todo search over dependencies
+        return $this->getService()->removeUsage($schemes, $service);
     }
 }

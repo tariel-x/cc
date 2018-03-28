@@ -107,8 +107,9 @@ class Contract implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'schemes' => $this->getSchemes(),
+            'schemes'  => $this->getSchemes(),
             'services' => $this->getServices(),
+            'usages'   => $this->getUsages(),
         ];
     }
 }

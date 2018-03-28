@@ -4,9 +4,16 @@ namespace App\Service\SchemeService;
 
 class ContractBuilder
 {
-    public function build(array $schemes, array $service): Contract
+    public function buildContract(array $schemes, array $service): Contract
     {
-        return new Contract($this->makeSchemes($schemes), $this->makeService($service));
+        return (new Contract($this->makeSchemes($schemes)))
+            ->setService($this->makeService($service));
+    }
+
+    public function buildUsageContract(array $schemes, array $service): Contract
+    {
+        return (new Contract($this->makeSchemes($schemes)))
+            ->setUsage($this->makeService($service));
     }
 
      /**

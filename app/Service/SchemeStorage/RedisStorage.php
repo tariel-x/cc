@@ -12,8 +12,6 @@ class RedisStorage implements SchemeStorageInterface
 
     const CONTRACT_PREFIX = 'contract_';
 
-    const DEPENDENCY_PREFIX = 'dep_';
-
     /**
      * redis
      *
@@ -56,43 +54,6 @@ class RedisStorage implements SchemeStorageInterface
     public function removeContract(array $schemes): bool
     {
         return $this->remove($schemes, self::CONTRACT_PREFIX);
-    }
-
-    public function getAllDependencies(): array
-    {
-        return $this->getAll(self::DEPENDENCY_PREFIX);
-    }
-
-    /**
-     * Save dependency
-     * @param Contract $contract
-     * @return bool
-     */
-    public function saveDependency(Contract $contract): bool
-    {
-        return $this->save($contract, self::DEPENDENCY_PREFIX);
-    }
-
-    /**
-     * Get dependency by scheme
-     *
-     * @param array $schemes
-     * @return Contract
-     */
-    public function getDependency(array $schemes): ?Contract
-    {
-        return $this->get($schemes, self::DEPENDENCY_PREFIX);
-    }
-
-    /**
-     * Remove dependency
-     *
-     * @param array $schemes
-     * @return boolean
-     */
-    public function removeDependency(array $schemes): bool
-    {
-        return $this->remove($schemes, self::DEPENDENCY_PREFIX);
     }
 
     /**

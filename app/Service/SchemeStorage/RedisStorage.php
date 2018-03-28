@@ -33,14 +33,66 @@ class RedisStorage implements SchemeStorageInterface
      * @param Contract $contract
      * @return bool
      */
-    public function save(Contract $contract): bool
+    public function saveContract(Contract $contract): bool
     {
-        $hash = $this->hash($contract->getSchemes(), self::CONTRACT_PREFIX);
-        $rawContract = $contract->jsonSerialize();
-        (new \App\Service\Helper())->sort($rawContract);
-        $this->redis->set($hash, json_encode($rawContract));
-        $this->logger->debug(sprintf('Setted contract with hash `%s`', $hash));
-        return true;
+        return $this->save($contract, self::CONTRACT_PREFIX);
+    }
+
+    /**
+     * Get all contracts
+     *
+     * @return Contract[]
+     */
+    public function getAllContracts(): array
+    {
+        return $this->getAll(self::CONTRACT_PREFIX);
+    }
+
+    public function getContract(array $schemes): ?Contract
+    {
+        return $this->get($schemes, self::CONTRACT_PREFIX);
+    }
+
+    public function removeContract(array $schemes): bool
+    {
+        return $this->remove($schemes, self::CONTRACT_PREFIX);
+    }
+
+    public function getAllDependecies(): array
+    {
+        return $this->getAll(self::DEPENDENCY_PREFIX);
+    }
+
+    /**
+     * Save dependency
+     * @param Contract $contract
+     * @return bool
+     */
+    public function saveDependency(Contract $contract): bool
+    {
+        return $this->save($contract, self::DEPENDENCY_PREFIX);
+    }
+
+    /**
+     * Get dependency by scheme
+     *
+     * @param array $schemes
+     * @return Contract
+     */
+    public function getDependency(array $schemes): ?Contract
+    {
+        return $this->get($schemes, self::DEPENDENCY_PREFIX);
+    }
+
+    /**
+     * Remove dependency
+     *
+     * @param array $schemes
+     * @return boolean
+     */
+    public function removeDependency(array $schemes): bool
+    {
+        return $this->remove($schemes, self::DEPENDENCY_PREFIX);
     }
 
     /**
@@ -55,17 +107,17 @@ class RedisStorage implements SchemeStorageInterface
         return $prefix . md5(json_encode($data));
     }
 
-    /**
-     * Get all contracts
-     *
-     * @return Contract[]
-     */
-    public function getAll(): array
+    private function save(Contract $contract, string $prefix): bool
     {
-        return $this->getAllModels(self::CONTRACT_PREFIX);
+        $hash = $this->hash($contract->getSchemes(), $prefix);
+        $rawContract = $contract->jsonSerialize();
+        (new \App\Service\Helper())->sort($rawContract);
+        $this->redis->set($hash, json_encode($rawContract));
+        $this->logger->debug(sprintf('Setted contract with hash `%s`', $hash));
+        return true;
     }
 
-    private function getAllModels(string $prefix): array
+    private function getAll(string $prefix): array
     {
         $builder = new ModelBuilder();
         $keys = $this->redis->keys($prefix . '*');
@@ -77,9 +129,9 @@ class RedisStorage implements SchemeStorageInterface
         }, $data);
     }
 
-    public function get(array $schemes): ?Contract
+    private function get(array $schemes, string $prefix): ?Contract
     {
-        $hash = $this->hash($schemes, self::CONTRACT_PREFIX);
+        $hash = $this->hash($schemes, $prefix);
         $data = $this->redis->get($hash);
         if ($data === false) {
             $this->logger->debug(sprintf("No contracts found with hash `%s`", $hash));
@@ -89,14 +141,9 @@ class RedisStorage implements SchemeStorageInterface
         return (new ModelBuilder())->modelFromRaw(json_decode($data, true));
     }
 
-    public function remove(array $schemes): bool
+    private function remove(array $schemes, string $prefix): bool
     {
-        $hash = $this->hash($schemes, self::CONTRACT_PREFIX);
+        $hash = $this->hash($schemes, $prefix);
         return $this->redis->del($hash);
-    }
-
-    public function getAllDependecies(): array
-    {
-        return $this->getAllModels(self::DEPENDENCY_PREFIX);
     }
 }

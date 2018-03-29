@@ -155,9 +155,15 @@ class SchemeService
         return $this->getStorage()->saveContract($existing);
     }
 
-
-    public function health()
+    /**
+     * Returns contract without services, but with usages
+     * @return ContractModel[]|array
+     */
+    public function getProblems(): array
     {
-        //todo check all contracts
+        $contracts = $this->getStorage()->getAllContracts();
+        return array_filter($contracts, function (ContractModel $contract) {
+            return empty($contract->getServices()) && !empty($contract->getUsages());
+        });
     }
 }

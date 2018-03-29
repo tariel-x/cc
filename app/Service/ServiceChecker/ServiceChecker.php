@@ -3,15 +3,10 @@ namespace App\Service\ServiceChecker;
 
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\Timer;
-use WyriHaximus\React\ChildProcess\Closure\ClosureChild;
-use WyriHaximus\React\ChildProcess\Closure\MessageFactory;
-use WyriHaximus\React\ChildProcess\Messenger\Factory as MessengerFactory;
-use WyriHaximus\React\ChildProcess\Messenger\Messages\Payload;
-use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-
-use App\Service\SchemeStorage\SchemeStorageInterface;
+use App\Service\SchemeService\SchemeService;
+use App\Service\SchemeStorage\Models\Contract as ContractModel;
 
 /**
  * Class ServiceChecker
@@ -23,9 +18,9 @@ class ServiceChecker
     use LoggerAwareTrait;
 
     /**
-     * @var SchemeStorageInterface
+     * @var SchemeService
      */
-    private $storage;
+    private $service;
 
     /**
      * @var LoopInterface
@@ -34,22 +29,22 @@ class ServiceChecker
 
     /**
      * ServiceChecker constructor.
-     * @param SchemeStorageInterface $storage
+     * @param SchemeService $service
      * @param LoopInterface $loop
      */
-    public function __construct(SchemeStorageInterface $storage, LoopInterface $loop)
+    public function __construct(SchemeService $service, LoopInterface $loop)
     {
-        $this->storage = $storage;
+        $this->service = $service;
         $this->loop = $loop;
         $this->logger = new NullLogger();
     }
 
     /**
-     * @return SchemeStorageInterface
+     * @return SchemeService
      */
-    public function getStorage(): SchemeStorageInterface
+    public function getService(): SchemeService
     {
-        return $this->storage;
+        return $this->service;
     }
 
     /**
@@ -63,14 +58,15 @@ class ServiceChecker
     public function start()
     {
         $this->getLoop()->addPeriodicTimer(2, function (Timer $timer) {
-            $this->logger->debug('tick');
             $this->exec();
         });
     }
 
-    protected function exec(): array
+    protected function exec()
     {
-        $this->logger->debug('exec');
-        return ['time' => time()];
+        /** @var ContractModel[] $contracts */
+        $contracts = $this->getService()->getAll();
+        $this->logger->debug('load contracts list');
+        $this->logger->debug(count($contracts));
     }
 }

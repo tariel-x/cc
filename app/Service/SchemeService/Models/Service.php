@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\SchemeService;
+namespace App\Service\SchemeService\Models;
 
 class Service implements \JsonSerializable
 {

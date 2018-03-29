@@ -1,11 +1,17 @@
 <?php
 namespace App\Service\SchemeService;
 
+use App\Service\SchemeService\Models\Contract;
 use App\Service\SchemeStorage\SchemeStorageInterface;
 use App\Service\SchemeStorage\Models\Contract as ContractModel;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
+/**
+ * Class SchemeService
+ * @package App\Service\SchemeService
+ * @author Nikita Gerasimov <tariel-x@ya.ru>
+ */
 class SchemeService
 {
     use LoggerAwareTrait;
@@ -74,22 +80,39 @@ class SchemeService
         return $this->registerNew($contract);
     }
 
+    /**
+     * @param Contract $contract
+     * @return bool
+     */
     private function registerNew(Contract $contract): bool
     {
         $model = (new ModelBuilder())->createContractModel($contract);
         return $this->getStorage()->saveContract($model);
     }
 
+    /**
+     * @return ContractModel[]
+     */
     public function getAll(): array
     {
         return (array)$this->getStorage()->getAllContracts();
     }
 
+    /**
+     * @param array $schemes
+     * @return ContractModel|null
+     */
     public function get(array $schemes)
     {
         return $this->getStorage()->getContract($schemes);
     }
 
+    /**
+     * Remove contract
+     * @param array $schemes
+     * @param array $service
+     * @return bool
+     */
     public function removeContract(array $schemes, array $service): bool
     {
         $existing = $this->getStorage()->getContract($schemes);
@@ -101,6 +124,12 @@ class SchemeService
         return $this->removeOrUpdate($existing);
     }
 
+    /**
+     * Remove usage of contract
+     * @param array $schemes
+     * @param array $service
+     * @return bool
+     */
     public function removeUsage(array $schemes, array $service): bool
     {
         $existing = $this->getStorage()->getContract($schemes);
@@ -112,6 +141,11 @@ class SchemeService
         return $this->removeOrUpdate($existing);
     }
 
+    /**
+     * Removes if no services or usages
+     * @param ContractModel $existing
+     * @return bool
+     */
     private function removeOrUpdate(ContractModel $existing): bool
     {
         if (empty($existing->getUsages()) && empty($existing->getServices())) {

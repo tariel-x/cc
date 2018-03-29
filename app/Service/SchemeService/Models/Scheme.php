@@ -1,5 +1,5 @@
 <?php
-namespace App\Service\SchemeService;
+namespace App\Service\SchemeService\Models;
 
 /**
  * Class Scheme

@@ -72,8 +72,8 @@ class ModelBuilder
 
     public function removeUsage(ContractModel $model, Contract $contract): ContractModel
     {
-        $services = $this->removeServiceItem($model->getServices(), $contract->getService()->jsonSerialize());
-        $model->setServices($services);
+        $services = $this->removeServiceItem($model->getUsages(), $contract->getUsage()->jsonSerialize());
+        $model->setUsages($services);
         return $model;
     }
 

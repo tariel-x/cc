@@ -114,7 +114,8 @@ class SchemeService
 
     private function removeOrUpdate(ContractModel $existing): bool
     {
-        if (empty($existing->getUsages())) {
+        if (empty($existing->getUsages()) && empty($existing->getServices())) {
+            $this->logger->debug('Contract does not contain services or usages, remove it.');
             return $this->getStorage()->removeContract($existing->getSchemes());
         }
         return $this->getStorage()->saveContract($existing);

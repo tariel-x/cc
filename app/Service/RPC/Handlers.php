@@ -117,4 +117,15 @@ class Handlers
     {
         return $this->getService()->getProblems();
     }
+
+    /**
+     * Check is service removing breaks contract usage
+     * @param array $schemes
+     * @param array $service
+     * @return bool
+     */
+    public function isRemoval(array $schemes, array $service): bool
+    {
+        return $this->getService()->isRemoval($schemes, $service);
+    }
 }

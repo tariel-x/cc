@@ -1,7 +1,8 @@
 {
 	"info": {
-		"_postman_id": "5e692c88-a1f0-4171-9aa1-0557cf2e15e3",
 		"name": "rpc",
+		"_postman_id": "c986bbfe-1275-4a9f-a35b-072e771abcae",
+		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -17,7 +18,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"registerContract\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"bbb\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"test\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"registerContract\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"aaa\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"test123\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8883/rpc",
@@ -29,7 +30,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -45,7 +47,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"registerUsage\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"bbb\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"u2\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"registerUsage\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"aaa\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"u1\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8883/rpc",
@@ -57,7 +59,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -85,7 +88,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -113,7 +117,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -141,7 +146,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -169,7 +175,66 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "get problems",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"getProblems\", \n\t\"params\": {}, \n\t\"id\": 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8883/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8883",
+					"path": [
+						"rpc"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "is removal",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"isRemoval\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"aaa\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"test\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8883/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8883",
+					"path": [
+						"rpc"
+					]
+				},
+				"description": ""
 			},
 			"response": []
 		}

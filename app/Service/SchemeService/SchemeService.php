@@ -166,4 +166,21 @@ class SchemeService
             return empty($contract->getServices()) && !empty($contract->getUsages());
         });
     }
+
+    /**
+     * Check is service removing breaks contract usage
+     * @param array $schemes
+     * @param array $service
+     * @return bool
+     */
+    public function isRemoval(array $schemes, array $service): bool
+    {
+        $existing = $this->getStorage()->getContract($schemes);
+        if ($existing === null) {
+            return true;
+        }
+        $contract = (new ContractBuilder())->buildContract($schemes, $service);
+        $existing = (new ModelBuilder())->removeService($existing, $contract);
+        return !(empty($existing->getServices()) && !empty($existing->getUsages()));
+    }
 }

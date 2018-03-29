@@ -2,13 +2,16 @@
 namespace App\Service\ServiceChecker;
 
 use React\EventLoop\LoopInterface;
-
 use React\EventLoop\Timer\Timer;
 use WyriHaximus\React\ChildProcess\Closure\ClosureChild;
 use WyriHaximus\React\ChildProcess\Closure\MessageFactory;
 use WyriHaximus\React\ChildProcess\Messenger\Factory as MessengerFactory;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Payload;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+
+use App\Service\SchemeStorage\SchemeStorageInterface;
 
 /**
  * Class ServiceChecker
@@ -17,10 +20,12 @@ use WyriHaximus\React\ChildProcess\Messenger\Messenger;
  */
 class ServiceChecker
 {
+    use LoggerAwareTrait;
+
     /**
-     * @var \Redis
+     * @var SchemeStorageInterface
      */
-    private $redis;
+    private $storage;
 
     /**
      * @var LoopInterface
@@ -29,21 +34,22 @@ class ServiceChecker
 
     /**
      * ServiceChecker constructor.
-     * @param \Redis $redis
+     * @param SchemeStorageInterface $storage
      * @param LoopInterface $loop
      */
-    public function __construct(\Redis $redis, LoopInterface $loop)
+    public function __construct(SchemeStorageInterface $storage, LoopInterface $loop)
     {
-        $this->redis = $redis;
+        $this->storage = $storage;
         $this->loop = $loop;
+        $this->logger = new NullLogger();
     }
 
     /**
-     * @return \Redis
+     * @return SchemeStorageInterface
      */
-    public function getRedis(): \Redis
+    public function getStorage(): SchemeStorageInterface
     {
-        return $this->redis;
+        return $this->storage;
     }
 
     /**
@@ -56,24 +62,15 @@ class ServiceChecker
 
     public function start()
     {
-        MessengerFactory::parentFromClass(ClosureChild::class, $this->getLoop())->then(function (Messenger $messenger) {
-            $messenger->on('error', function ($e) {
-                echo 'Error: ', var_export($e, true), PHP_EOL;
-            });
-            $i = 0;
-            $this->getLoop()->addPeriodicTimer(5, function (Timer $timer) use (&$i, $messenger) {
-                if ($i >= 13) {
-                    $timer->cancel();
-                    $messenger->softTerminate();
-                    return;
-                }
-                $messenger->rpc(MessageFactory::rpc(function () {
-                    return ['time' => time()]; // Note that you ALWAYS MUST return an array
-                }))->done(function (Payload $payload) {
-                    echo $payload['time'], PHP_EOL;
-                });
-                $i++;
-            });
+        $this->getLoop()->addPeriodicTimer(2, function (Timer $timer) {
+            $this->logger->debug('tick');
+            $this->exec();
         });
+    }
+
+    protected function exec(): array
+    {
+        $this->logger->debug('exec');
+        return ['time' => time()];
     }
 }

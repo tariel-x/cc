@@ -31,7 +31,8 @@ $server = new Server(function (ServerRequestInterface $request) {
 });
 
 //service checker
-$serviceChecker = new \App\Service\ServiceChecker\ServiceChecker($redis, $loop);
+$serviceChecker = new \App\Service\ServiceChecker\ServiceChecker($schemeStorage, $loop);
+$serviceChecker->setLogger($logger);
 $serviceChecker->start();
 
 $socket = new React\Socket\Server('0.0.0.0:8883', $loop);

@@ -1,9 +1,9 @@
-## Register
+## Register contract
 
 ```json
 {
 	"jsonrpc": "2.0", 
-	"method": "register", 
+	"method": "registerContract", 
 	"params": {
 		"schemes": [
 			{
@@ -53,12 +53,58 @@
 }
 ```
 
-## Remove
+## Remove contract
 
 ```json
 {
 	"jsonrpc": "2.0", 
-	"method": "remove", 
+	"method": "removeContract", 
+	"params": {
+		"schemes": [
+			{
+				"in": true,
+				"scheme": ["bbb"],
+				"type": "none"
+			}
+		],
+		"service": {
+			"name": "test",
+			"address": []
+		}
+	}, 
+	"id": 1
+}
+```
+
+## Register usage
+
+```json
+{
+	"jsonrpc": "2.0", 
+	"method": "registerUsage", 
+	"params": {
+		"schemes": [
+			{
+				"in": true,
+				"scheme": ["bbb"],
+				"type": "none"
+			}
+		],
+		"service": {
+			"name": "test",
+			"address": []
+		}
+	}, 
+	"id": 1
+}
+```
+
+## Remove usage
+
+```json
+{
+	"jsonrpc": "2.0", 
+	"method": "removeUsage", 
 	"params": {
 		"schemes": [
 			{

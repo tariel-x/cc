@@ -120,4 +120,10 @@ class SchemeService
         }
         return $this->getStorage()->saveContract($existing);
     }
+
+
+    public function health()
+    {
+        //todo check all contracts
+    }
 }

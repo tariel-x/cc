@@ -1,6 +1,7 @@
 <?php
 namespace App\Service\ServiceChecker;
 
+use App\Service\Helper;
 use App\Service\SchemeService\SchemeService;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\Timer;
@@ -69,7 +70,7 @@ class ServiceChecker
     {
         $this->getLoop()->addPeriodicTimer(2, function (Timer $timer) {
             $this->exec();
-            $timer->cancel();
+//            $timer->cancel();
         });
     }
 
@@ -92,8 +93,7 @@ class ServiceChecker
 
     private function loadContracts(ContractModel $contract, array $service)
     {
-//        $url = $service[self::CHECK_URL];
-        $url = 'http://localhost/contracts.json';
+        $url = $service[self::CHECK_URL];
         $data = '';
         $request = $this->client->request('GET', $url);
         $request->on('response', function (Response $response) use (&$data, $url, $contract, $service) {
@@ -116,6 +116,26 @@ class ServiceChecker
         $rawContracts = json_decode($data, true);
         foreach ($rawContracts as $rawContract) {
             $this->getService()->registerContract($rawContract['schemes'], $rawContract['service']);
+            $this->logger->info(
+                sprintf(
+                    'Registering new or existing contract `%s` for service `%s`',
+                    json_encode($rawContract['schemes']),
+                    $rawContract['service']['name']
+                )
+            );
+        }
+
+        $schemesLoaded = array_map(function (array $schemes) {return $schemes['schemes'];}, $rawContracts);
+        $keepContract = (new Helper())->arrayContainsArray($schemesLoaded, $contract->getSchemes());
+        if ($keepContract === false) {
+            $this->logger->info(
+                sprintf(
+                    'Due to service contracts info remove contract `%s` for service `%s`',
+                    json_encode($contract->getSchemes()),
+                    $service['name']
+                )
+            );
+            $this->getService()->removeContract($contract->getSchemes(), $service);
         }
     }
 }

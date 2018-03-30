@@ -141,7 +141,6 @@ class ModelBuilder
 
     private function hash(array $data): string
     {
-        (new Helper())->sort($data);
-        return md5(json_encode($data));
+        return (new Helper())->hash($data);
     }
 }

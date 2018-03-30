@@ -31,7 +31,7 @@ $server = new Server(function (ServerRequestInterface $request) {
 });
 
 //service checker
-$serviceChecker = new \App\Service\ServiceChecker\ServiceChecker($schemeStorage, $loop);
+$serviceChecker = new \App\Service\ServiceChecker\ServiceChecker($schemeService, $loop);
 $serviceChecker->setLogger($logger);
 $serviceChecker->start();
 

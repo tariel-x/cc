@@ -14,17 +14,30 @@ class Service implements \JsonSerializable
      */
     private $address;
 
-    public function __construct(string $name, array $address)
+    /**
+     * @var string
+     */
+    private $checkUrl;
+
+    /**
+     * Service constructor.
+     * @param string $name
+     * @param array $address
+     * @param string $checkUrl
+     */
+    public function __construct(string $name, array $address, string $checkUrl)
     {
         $this->name = $name;
         $this->address = $address;
+        $this->checkUrl = $checkUrl;
     }    
 
     public function jsonSerialize()
     {
         return [
-            'name' => $this->getName(),
-            'address' => $this->getAddress(),
+            'name'     => $this->getName(),
+            'address'  => $this->getAddress(),
+            'check_url' => $this->getCheckUrl(),
         ];
     }
 
@@ -46,5 +59,13 @@ class Service implements \JsonSerializable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCheckUrl(): string
+    {
+        return $this->checkUrl;
     }
 }

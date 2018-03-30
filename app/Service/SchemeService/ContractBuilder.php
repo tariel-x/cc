@@ -54,6 +54,6 @@ class ContractBuilder
 
     private function makeService(array $service): Service
     {
-        return new Service($service['name'], $service['address']);
+        return new Service($service['name'], $service['address'], $service['check_url']);
     }
 }

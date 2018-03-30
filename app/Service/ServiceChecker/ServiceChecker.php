@@ -5,22 +5,22 @@ use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\Timer;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use App\Service\SchemeService\SchemeService;
+use App\Service\SchemeStorage\SchemeStorageInterface;
 use App\Service\SchemeStorage\Models\Contract as ContractModel;
 
 /**
  * Class ServiceChecker
  * @package App\Service\ServiceChecker
- * @author Nikita Gerasimov <nikita.gerasimov@corp.mail.ru>
+ * @author Nikita Gerasimov <tariel-x@ya.ru>
  */
 class ServiceChecker
 {
     use LoggerAwareTrait;
 
     /**
-     * @var SchemeService
+     * @var SchemeStorageInterface
      */
-    private $service;
+    private $storage;
 
     /**
      * @var LoopInterface
@@ -29,22 +29,22 @@ class ServiceChecker
 
     /**
      * ServiceChecker constructor.
-     * @param SchemeService $service
+     * @param SchemeStorageInterface $storage
      * @param LoopInterface $loop
      */
-    public function __construct(SchemeService $service, LoopInterface $loop)
+    public function __construct(SchemeStorageInterface $storage, LoopInterface $loop)
     {
-        $this->service = $service;
+        $this->storage = $storage;
         $this->loop = $loop;
         $this->logger = new NullLogger();
     }
 
     /**
-     * @return SchemeService
+     * @return SchemeStorageInterface
      */
-    public function getService(): SchemeService
+    public function getStorage(): SchemeStorageInterface
     {
-        return $this->service;
+        return $this->storage;
     }
 
     /**
@@ -65,8 +65,23 @@ class ServiceChecker
     protected function exec()
     {
         /** @var ContractModel[] $contracts */
-        $contracts = $this->getService()->getAll();
+        $contracts = $this->getStorage()->getAllContracts();
         $this->logger->debug('load contracts list');
-        $this->logger->debug(count($contracts));
+        $this->logger->debug(sprintf('contracts count %d', count($contracts)));
+        array_walk($contracts, [$this, 'updateContract']);
+    }
+
+    private function updateContract(ContractModel $contract)
+    {
+        array_walk($contract->getServices(), function(array $service) use ($contract) {
+            $this->checkServiceProvide($contract, $service);
+        });
+    }
+
+    private function checkServiceProvide(ContractModel $contract, array $service)
+    {
+        $url = $service['contracts_url'];
+        //load list of contracts
+        $contracts = [];
     }
 }

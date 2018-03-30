@@ -7,6 +7,8 @@ require_once(__DIR__ . '/vendor/autoload.php');
 require_once(__DIR__ . '/routes.php');
 require_once(__DIR__ . '/handler.php');
 
+$config = \App\Yaml::parse(file_get_contents(__DIR__.'/config.yml'));
+
 //loop
 $loop = React\EventLoop\Factory::create();
 

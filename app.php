@@ -31,9 +31,12 @@ $server = new Server(function (ServerRequestInterface $request) {
 });
 
 //service checker
-$serviceChecker = new \App\Service\ServiceChecker\ServiceChecker($schemeService, $loop);
-$serviceChecker->setLogger($logger);
-$serviceChecker->start();
+if (in_array('watch', $argv)) {
+    $logger->info('Start watching contracts');
+    $serviceChecker = new \App\Service\ServiceChecker\ServiceChecker($schemeService, $loop);
+    $serviceChecker->setLogger($logger);
+    $serviceChecker->start();
+}
 
 $socket = new React\Socket\Server('0.0.0.0:8883', $loop);
 $server->listen($socket);

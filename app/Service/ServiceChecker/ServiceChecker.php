@@ -99,28 +99,56 @@ class ServiceChecker
         $this->logger->debug('load contracts list');
         $this->logger->debug(sprintf('contracts count %d', count($contracts)));
         array_walk($contracts, [$this, 'updateContract']);
+        array_walk($contracts, [$this, 'updateUsage']);
     }
 
+    /**
+     * Update found local contract - services
+     *
+     * @param ContractModel $contract
+     * @return void
+     */
     private function updateContract(ContractModel $contract)
     {
         $services = $contract->getServices();
         array_walk($services, function(array $service) use ($contract) {
-            $this->loadContracts($contract, $service);
+            $this->loadContracts($contract->getSchemes(), $service);
         });
     }
 
-    private function loadContracts(ContractModel $contract, array $service)
+    /**
+     * Update found local contract - usages
+     *
+     * @param ContractModel $contract
+     * @return void
+     */
+    private function updateUsage(ContractModel $contract)
+    {
+        $usages = $contract->getUsages();
+        array_walk($usages, function(array $usage) use ($contract) {
+            $this->loadContracts($contract->getSchemes(), $usage);
+        });
+    }
+
+    /**
+     * Load current contract schemes
+     *
+     * @param array $currentSchemes
+     * @param array $service
+     * @return void
+     */
+    private function loadContracts(array $currentSchemes, array $service)
     {
         $url = $service[self::CHECK_URL];
         $data = '';
         $request = $this->client->request('GET', $url);
-        $request->on('response', function (Response $response) use (&$data, $url, $contract, $service) {
+        $request->on('response', function (Response $response) use (&$data, $url, $currentSchemes, $service) {
             $response->on('data', function ($chunk) use (&$data) {
                 $data .= $chunk;
             });
-            $response->on('end', function() use (&$data, $url, $contract, $service) {
+            $response->on('end', function() use (&$data, $url, $currentSchemes, $service) {
                 $this->logger->debug(sprintf('Loaded contracts from `%s`', $url));
-                $this->checkContractService($contract, $service, $data);
+                $this->checkContractService($currentSchemes, $currentServices, $service, $data);
             });
         });
         $request->on('error', function (\Exception $e) {
@@ -129,11 +157,25 @@ class ServiceChecker
         $request->end();
     }
 
-    private function checkContractService(ContractModel $contract, array $service, string $data)
+    /**
+     * This is one main function to add or remove contracts and usages
+     * TODO: refactor
+     *
+     * @param array $currentSchemes
+     * @param array $service
+     * @param string $data
+     * @param boolean $usage
+     * @return void
+     */
+    private function checkContractService(array $currentSchemes, array $service, string $data, bool $usage)
     {
         $rawContracts = json_decode($data, true);
         foreach ($rawContracts as $rawContract) {
-            $this->getService()->registerContract($rawContract['schemes'], $rawContract['service']);
+            if (!$usage) {
+                $this->getService()->registerContract($rawContract['schemes'], $rawContract['service']);
+            } else {
+                $this->getService()->registerUsage($rawContract['schemes'], $rawContract['service']);
+            }
             $this->logger->info(
                 sprintf(
                     'Registering new or existing contract `%s` for service `%s`',
@@ -144,16 +186,20 @@ class ServiceChecker
         }
 
         $schemesLoaded = array_map(function (array $schemes) {return $schemes['schemes'];}, $rawContracts);
-        $keepContract = (new Helper())->arrayContainsArray($schemesLoaded, $contract->getSchemes());
+        $keepContract = (new Helper())->arrayContainsArray($schemesLoaded, $currentSchemes);
         if ($keepContract === false) {
             $this->logger->info(
                 sprintf(
                     'Due to service contracts info remove contract `%s` for service `%s`',
-                    json_encode($contract->getSchemes()),
+                    json_encode($currentSchemes),
                     $service['name']
                 )
             );
-            $this->getService()->removeContract($contract->getSchemes(), $service);
+            if (!$usage) {
+                $this->getService()->removeContract($currentSchemes, $service);
+            } else {
+                $this->getService()->removeUsage($currentSchemes, $service);
+            }
         }
     }
 }

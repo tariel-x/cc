@@ -1,5 +1,5 @@
 watch:
-  timer: 600
+  timer: 2
 server:
   host: "0.0.0.0:8883"
 redis:

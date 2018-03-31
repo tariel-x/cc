@@ -12,7 +12,7 @@ class Yaml extends \Symfony\Component\Yaml\Yaml
      * Parses yaml and replaces env params
      * {@inheritdoc}
      */
-    public static function parse($input, $flags = 0)
+    public static function parse(string $input, int $flags = 0)
     {
         $config = parent::parse($input, $flags);
         self::replaceRecursive($config);

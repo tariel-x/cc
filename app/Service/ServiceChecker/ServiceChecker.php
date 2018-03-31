@@ -35,6 +35,13 @@ class ServiceChecker
      */
     private $client;
 
+    /**
+     * timer to check schemes
+     *
+     * @var integer
+     */
+    private $timer = 0;
+
     const CHECK_URL = 'check_url';
 
     /**
@@ -66,9 +73,20 @@ class ServiceChecker
         return $this->loop;
     }
 
+    /**
+     * Set timer to check schemes
+     * @param  integer  $timer  timer to check schemes
+     * @return  self
+     */ 
+    public function setTimer(int $timer)
+    {
+        $this->timer = $timer;
+        return $this;
+    }
+
     public function start()
     {
-        $this->getLoop()->addPeriodicTimer(2, function (Timer $timer) {
+        $this->getLoop()->addPeriodicTimer($this->timer, function (Timer $timer) {
             $this->exec();
 //            $timer->cancel();
         });

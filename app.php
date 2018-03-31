@@ -16,8 +16,7 @@ $logger = WyriHaximus\React\PSR3\Stdio\StdioLogger::create($loop)->withNewLine(t
 
 //redis
 $redis = new Redis();
-$redis->connect('127.0.0.1');
-$logger->info('Connected redis');
+$redis->connect($config['redis']['host']);
 
 //services
 $schemeStorage = new \App\Service\SchemeStorage\RedisStorage($redis);
@@ -37,10 +36,11 @@ if (in_array('watch', $argv)) {
     $logger->info('Start watching contracts');
     $serviceChecker = new \App\Service\ServiceChecker\ServiceChecker($schemeService, $loop);
     $serviceChecker->setLogger($logger);
+    $serviceChecker->setTimer((int)$config['watch']['timer']);
     $serviceChecker->start();
 }
 
-$socket = new React\Socket\Server('0.0.0.0:8883', $loop);
+$socket = new React\Socket\Server($config['server']['host'], $loop);
 $server->listen($socket);
-$logger->info('Server started at 0.0.0.0:8883');
+$logger->info(sprintf('Server started at %s', $config['server']['host']));
 $loop->run();

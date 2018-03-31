@@ -112,7 +112,7 @@ class ServiceChecker
     {
         $services = $contract->getServices();
         array_walk($services, function(array $service) use ($contract) {
-            $this->loadContracts($contract->getSchemes(), $service);
+            $this->loadContracts($contract->getSchemes(), $service, false);
         });
     }
 
@@ -126,7 +126,7 @@ class ServiceChecker
     {
         $usages = $contract->getUsages();
         array_walk($usages, function(array $usage) use ($contract) {
-            $this->loadContracts($contract->getSchemes(), $usage);
+            $this->loadContracts($contract->getSchemes(), $usage, true);
         });
     }
 
@@ -137,18 +137,18 @@ class ServiceChecker
      * @param array $service
      * @return void
      */
-    private function loadContracts(array $currentSchemes, array $service)
+    private function loadContracts(array $currentSchemes, array $service, bool $usage)
     {
         $url = $service[self::CHECK_URL];
         $data = '';
         $request = $this->client->request('GET', $url);
-        $request->on('response', function (Response $response) use (&$data, $url, $currentSchemes, $service) {
+        $request->on('response', function (Response $response) use (&$data, $url, $currentSchemes, $service, $usage) {
             $response->on('data', function ($chunk) use (&$data) {
                 $data .= $chunk;
             });
-            $response->on('end', function() use (&$data, $url, $currentSchemes, $service) {
+            $response->on('end', function() use (&$data, $url, $currentSchemes, $service, $usage) {
                 $this->logger->debug(sprintf('Loaded contracts from `%s`', $url));
-                $this->checkContractService($currentSchemes, $currentServices, $service, $data);
+                $this->checkContractService($currentSchemes, $service, $data, $usage);
             });
         });
         $request->on('error', function (\Exception $e) {
@@ -169,18 +169,19 @@ class ServiceChecker
      */
     private function checkContractService(array $currentSchemes, array $service, string $data, bool $usage)
     {
+        $serviceKey = $usage ? 'usage' : 'service';
         $rawContracts = json_decode($data, true);
         foreach ($rawContracts as $rawContract) {
             if (!$usage) {
-                $this->getService()->registerContract($rawContract['schemes'], $rawContract['service']);
+                $this->getService()->registerContract($rawContract['schemes'], $rawContract[$serviceKey]);
             } else {
-                $this->getService()->registerUsage($rawContract['schemes'], $rawContract['service']);
+                $this->getService()->registerUsage($rawContract['schemes'], $rawContract[$serviceKey]);
             }
             $this->logger->info(
                 sprintf(
                     'Registering new or existing contract `%s` for service `%s`',
                     json_encode($rawContract['schemes']),
-                    $rawContract['service']['name']
+                    $rawContract[$serviceKey]['name']
                 )
             );
         }

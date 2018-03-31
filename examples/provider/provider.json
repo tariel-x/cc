@@ -1,0 +1,30 @@
+[
+    {
+		"schemes": [
+			{
+				"in": false,
+				"scheme": ["bbb"],
+				"type": "none"
+			}
+		],
+		"service": {
+			"name": "provider",
+            "address": [],
+            "check_url": "http://localhost:8881/provider.json"
+		}
+    },
+    {
+		"schemes": [
+			{
+				"in": false,
+				"scheme": ["aaa"],
+				"type": "none"
+			}
+		],
+		"service": {
+			"name": "provider",
+            "address": [],
+            "check_url": "http://localhost:8881/provider.json"
+		}
+	}
+]

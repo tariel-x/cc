@@ -1,0 +1,30 @@
+[
+    {
+		"schemes": [
+			{
+				"in": false,
+				"scheme": ["bbb"],
+				"type": "none"
+			}
+		],
+		"usage": {
+			"name": "provider",
+            "address": [],
+            "check_url": "http://localhost:8882/usage.json"
+		}
+    },
+    {
+		"schemes": [
+			{
+				"in": false,
+				"scheme": ["ccc"],
+				"type": "none"
+			}
+		],
+		"usage": {
+			"name": "provider",
+            "address": [],
+            "check_url": "http://localhost:8882/usage.json"
+		}
+	}
+]

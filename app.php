@@ -1,8 +1,5 @@
 <?php
 
-use Psr\Http\Message\ServerRequestInterface;
-use React\Http\Server;
-
 require_once(__DIR__ . '/vendor/autoload.php');
 require_once(__DIR__ . '/routes.php');
 require_once(__DIR__ . '/handler.php');
@@ -10,9 +7,9 @@ require_once(__DIR__ . '/handler.php');
 $config = \App\Yaml::parse(file_get_contents(__DIR__.'/config.yml'));
 
 //loop
-$loop = React\EventLoop\Factory::create();
+$loop = \React\EventLoop\Factory::create();
 
-$logger = WyriHaximus\React\PSR3\Stdio\StdioLogger::create($loop)->withNewLine(true);
+$logger = \WyriHaximus\React\PSR3\Stdio\StdioLogger::create($loop)->withNewLine(true);
 
 //redis
 $redis = new Redis();
@@ -26,11 +23,6 @@ $schemeService->setLogger($logger);
 $handlers = new \App\Service\RPC\Handlers($schemeService);
 $jsonrpc = new \App\Service\RPC\JsonRPC($handlers);
 
-//server
-$server = new Server(function (ServerRequestInterface $request) {
-    return handle($request);
-});
-
 //service checker
 if (in_array('watch', $argv)) {
     $logger->info('Start watching contracts');
@@ -40,7 +32,12 @@ if (in_array('watch', $argv)) {
     $serviceChecker->start();
 }
 
-$socket = new React\Socket\Server($config['server']['host'], $loop);
+//server
+$server = new \React\Http\Server(function (\Psr\Http\Message\ServerRequestInterface $request) {
+    return handle($request);
+});
+
+$socket = new \React\Socket\Server($config['server']['host'], $loop);
 $server->listen($socket);
 $logger->info(sprintf('Server started at %s', $config['server']['host']));
 $loop->run();

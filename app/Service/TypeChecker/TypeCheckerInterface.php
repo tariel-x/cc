@@ -1,18 +1,19 @@
 <?php
-namespace App\Service\SchemeChecker;
+namespace App\Service\TypeChecker;
 
 /**
  * Interface SchemeCheckerInterface
+ * 
  * @package App\Service\SchemeChecker
  * @author Nikita Gerasimov <tariel-x@ya.ru>
  */
-interface SchemeCheckerInterface
+interface TypeCheckerInterface
 {
     /**
-     * Compare that schemes2 is compatible with schemes1
+     * Compare that scheme2 is compatible with scheme1
      * @param array $schemes1
      * @param array $schemes2
      * @return bool
      */
-    public function schemeCompatible(array $schemes1, array $schemes2): bool;
+    public function compare(array $scheme1, array $scheme2): bool;
 }

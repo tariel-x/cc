@@ -4,6 +4,7 @@ namespace App\Service\SchemeService;
 use App\Service\SchemeService\Models\Contract;
 use App\Service\SchemeStorage\SchemeStorageInterface;
 use App\Service\SchemeStorage\Models\Contract as ContractModel;
+use App\Service\TypeChecker\TypeCheckerInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
@@ -22,13 +23,19 @@ class TypeCheckSchemeService implements SchemeServiceInterface
     private $storage;
 
     /**
+     * @var TypeCheckerInterface
+     */
+    private $checker;
+
+    /**
      * SchemeService constructor.
      *
      * @param SchemeStorageInterface $storage
      */
-    public function __construct(SchemeStorageInterface $storage)
+    public function __construct(SchemeStorageInterface $storage, TypeCheckerInterface $checker)
     {
         $this->storage = $storage;
+        $this->checker = $checker;
         $this->logger = new NullLogger();
     }
 
@@ -38,6 +45,14 @@ class TypeCheckSchemeService implements SchemeServiceInterface
     public function getStorage(): SchemeStorageInterface
     {
         return $this->storage;
+    }
+
+    /**
+     * @return TypeCheckerInterface
+     */
+    public function getChecker(): TypeCheckerInterface
+    {
+        return $this->checker;
     }
 
     /**
@@ -162,8 +177,21 @@ class TypeCheckSchemeService implements SchemeServiceInterface
     public function getProblems(): array
     {
         $contracts = $this->getStorage()->getAllContracts();
-        return array_filter($contracts, function (ContractModel $contract) {
+        $noProviders = array_filter($contracts, function (ContractModel $contract) {
             return empty($contract->getServices()) && !empty($contract->getUsages());
+        });
+        return array_filter($noProviders, function (ContractModel $noProvider) use ($contracts) {
+            return array_reduce($contracts, function (bool $carry, ContractModel $contract) use ($noProvider) {
+                $result = true;
+                foreach ($contract->getSchemes() as $key => $scheme) {
+                    if (!array_key_exists($key, $noProvider->getSchemes())) {
+                        return false;
+                    }
+                    $noProviderScheme = $noProvider->getSchemes()[$key];
+                    $result = $result && $this->getChecker()->compare($scheme, $noProviderScheme);
+                }
+                return $carry && $result;
+            }, true);
         });
     }
 

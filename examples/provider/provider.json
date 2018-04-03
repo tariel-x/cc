@@ -35,6 +35,19 @@
                     }
                 },
 				"type": "json-schema"
+            },
+            {
+				"in": false,
+				"scheme": {
+                    "type": "object",
+                    "properties": {
+                        "b-out": {
+                            "type": "string",
+                            "maxLength": 50
+                        }
+                    }
+                },
+				"type": "json-schema"
 			}
 		],
 		"service": {

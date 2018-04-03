@@ -106,6 +106,8 @@ class SimpleTypeChecker implements TypeCheckerInterface
                 return (new JsonStringCheck())->compare($slr1, $slr2);
             case 'integer':
                 return (new JsonIntegerCheck())->compare($slr1, $slr2);
+            case 'number':
+                return (new JsonIntegerCheck())->compare($slr1, $slr2);
             case 'bool':
                 return (new JsonBoolCheck())->compare($slr1, $slr2);
             default:

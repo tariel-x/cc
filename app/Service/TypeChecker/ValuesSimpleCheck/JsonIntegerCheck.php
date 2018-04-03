@@ -8,12 +8,24 @@ namespace App\Service\TypeChecker\ValuesSimpleCheck;
  */
 class JsonIntegerCheck extends JsonCommonCheck
 {
+    /**
+     * Compare numeric field definitions
+     * @param array $scheme1
+     * @param array $scheme2
+     * @return bool
+     */
     public function compare(array $scheme1, array $scheme2): bool
     {
         $result = parent::compare($scheme1, $scheme2);
         if ($result === false) {
             return false;
         }
-        return true;
+        return $this->compareValidationProps($scheme1, $scheme2, [
+            'multipleOf',
+            'maximum',
+            'exclusiveMaximum',
+            'minimum',
+            'exclusiveMinimum',
+        ]);
     }
 }

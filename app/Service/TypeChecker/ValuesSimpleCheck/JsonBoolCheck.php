@@ -8,12 +8,14 @@ namespace App\Service\TypeChecker\ValuesSimpleCheck;
  */
 class JsonBoolCheck extends JsonCommonCheck
 {
+    /**
+     * Compare bool field definitions
+     * @param array $scheme1
+     * @param array $scheme2
+     * @return bool
+     */
     public function compare(array $scheme1, array $scheme2): bool
     {
-        $result = parent::compare($scheme1, $scheme2);
-        if ($result === false) {
-            return false;
-        }
-        return true;
+        return parent::compare($scheme1, $scheme2);
     }
 }

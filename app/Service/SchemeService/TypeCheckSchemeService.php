@@ -31,6 +31,7 @@ class TypeCheckSchemeService implements SchemeServiceInterface
      * SchemeService constructor.
      *
      * @param SchemeStorageInterface $storage
+     * @param TypeCheckerInterface $checker
      */
     public function __construct(SchemeStorageInterface $storage, TypeCheckerInterface $checker)
     {

@@ -1,6 +1,6 @@
 # Contract contoller
 
-Control service contracts providers and usages.
+Control service contracts providers and contracts usages.
 
 ## Quick start
 
@@ -15,13 +15,21 @@ composer install
 ./cc watch type-check
 ```
 
+### Docker
+
+In process...
+
 ## Usage
 
 Import queries to Postman from `rpc.postman_collection.json`. Register services proving contracts, register servives using contracts. Get providers addresses for contract-using services.
 
 ## Contract checking
 
-At current moment contracts checking only by hash.
+At current moment contracts are checking only by hash.
+
+### Type checking
+
+Type checking is expected to compare json schemes and to be simple.
 
 ## Tests
 

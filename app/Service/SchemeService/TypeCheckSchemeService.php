@@ -181,6 +181,7 @@ class TypeCheckSchemeService implements SchemeServiceInterface
         $noProviders = array_filter($contracts, function (ContractModel $contract) {
             return empty($contract->getServices()) && !empty($contract->getUsages());
         });
+        $this->logger->debug(sprintf("found no prov %d", count($noProviders)));
         return array_filter($noProviders, function (ContractModel $noProvider) use ($contracts) {
             return array_reduce($contracts, function (bool $carry, ContractModel $contract) use ($noProvider) {
                 $result = true;

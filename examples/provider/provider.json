@@ -2,9 +2,17 @@
     {
 		"schemes": [
 			{
-				"in": false,
-				"scheme": ["bbb"],
-				"type": "none"
+				"in": true,
+				"scheme": {
+                    "type": "object",
+                    "properties": {
+                        "a": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["a"]
+                },
+				"type": "json-schema"
 			}
 		],
 		"service": {
@@ -16,9 +24,17 @@
     {
 		"schemes": [
 			{
-				"in": false,
-				"scheme": ["aaa"],
-				"type": "none"
+				"in": true,
+				"scheme": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "string",
+                            "maxLength": 50
+                        }
+                    }
+                },
+				"type": "json-schema"
 			}
 		],
 		"service": {

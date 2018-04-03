@@ -2,13 +2,21 @@
     {
 		"schemes": [
 			{
-				"in": false,
-				"scheme": ["bbb"],
-				"type": "none"
+				"in": true,
+				"scheme": {
+                    "type": "object",
+                    "properties": {
+                        "a": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["a"]
+                },
+				"type": "json-schema"
 			}
 		],
 		"usage": {
-			"name": "provider",
+			"name": "user",
             "address": [],
             "check_url": "http://localhost:8882/usage.json"
 		}
@@ -16,13 +24,20 @@
     {
 		"schemes": [
 			{
-				"in": false,
-				"scheme": ["ccc"],
-				"type": "none"
+				"in": true,
+				"scheme": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "string"
+                        }
+                    }
+                },
+				"type": "json-schema"
 			}
 		],
 		"usage": {
-			"name": "provider",
+			"name": "user",
             "address": [],
             "check_url": "http://localhost:8882/usage.json"
 		}

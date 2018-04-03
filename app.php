@@ -21,7 +21,8 @@ $schemeStorage->setLogger($logger);
 
 if (in_array('type-check', $argv)) {
     $logger->info('Use json-schema type-checking');
-    $schemeService = new \App\Service\SchemeService\TypeCheckSchemeService($schemeStorage);
+    $typeChecker = new \App\Service\TypeChecker\SimpleTypeChecker();
+    $schemeService = new \App\Service\SchemeService\TypeCheckSchemeService($schemeStorage, $typeChecker);
     $schemeService->setLogger($logger);
 } else {
     $logger->info('Use strict schemas comparing');

@@ -32,6 +32,12 @@ class SimpleTypeChecker implements TypeCheckerInterface
      */
     private function compareSomething(array $scheme1, array $scheme2): bool
     {
+        if (empty($scheme1['type']) && empty($scheme2['type'])) {
+            return true;
+        }
+        if (empty($scheme2['type'])) {
+            return false;
+        }
         switch ($scheme2['type']) {
             case 'object':
                 return $this->checkObject($scheme1, $scheme2);
@@ -55,7 +61,7 @@ class SimpleTypeChecker implements TypeCheckerInterface
             return false;
         }
         foreach ($obj2['properties'] as $key => $prop2) {
-            $prop1 = empty($obj1[$key]) ? null : $obj1[$key];
+            $prop1 = empty($obj1['properties'][$key]) ? null : $obj1['properties'][$key];
             if ($prop1 === null) {
                 return false;
             }
@@ -81,13 +87,15 @@ class SimpleTypeChecker implements TypeCheckerInterface
         }
 
         //if obj1 reqs eq obj2 reqs - true
-        if (count(array_diff($obj1['required'], $obj2['required'])) === 0) {
+        $diff = array_diff($obj1['required'], $obj2['required']);
+        if (count($diff) === 0) {
             return true;
         }
 
         //if obj1 reqs in obj2 reqs - true
         $intersect = array_intersect($obj1['required'], $obj2['required']);
-        if (count(array_diff($intersect, $obj2['required'])) === 0) {
+        $diff = array_diff($obj2['required'], $intersect);
+        if (!empty($intersect) && count($diff) === 0) {
             return true;
         }
         return false;

@@ -45,6 +45,9 @@ class JsonCommonCheck implements TypeCheckerInterface
      */
     protected function compareValidationProp(array $scheme1, array $scheme2, string $prop): bool
     {
+        if (!empty($scheme1[$prop]) && empty($scheme2[$prop])) {
+            return false;
+        }
         if (!empty($scheme1[$prop])
             && $scheme1[$prop] !== $scheme2[$prop]) {
             return false;

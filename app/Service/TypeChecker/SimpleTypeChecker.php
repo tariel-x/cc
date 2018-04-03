@@ -49,10 +49,10 @@ class SimpleTypeChecker implements TypeCheckerInterface
 
     private function checkScalar(array $slr1, array $slr2): bool
     {
-        //todo check types
-        //check format
-        //check regexp for string
-        //other
+        switch ($slr2['type']) {
+            case "string":
+                return (new JsonStringCheck())->check($slr1, $slr2);
+        }
         return true;
     }
 }

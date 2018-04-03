@@ -1,9 +1,13 @@
 <?php
-
 namespace App\Service\TypeChecker\ValuesSimpleCheck;
 
 use App\Service\TypeChecker\TypeCheckerInterface;
 
+/**
+ * Class JsonCommonCheck
+ * @package App\Service\TypeChecker\ValuesSimpleCheck
+ * @author Nikita Gerasimov <tariel-x@ya.ru>
+ */
 class JsonCommonCheck implements TypeCheckerInterface
 {
     public function compare(array $scheme1, array $scheme2): bool

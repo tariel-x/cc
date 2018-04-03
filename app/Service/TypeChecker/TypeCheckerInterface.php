@@ -11,8 +11,8 @@ interface TypeCheckerInterface
 {
     /**
      * Compare that scheme2 is compatible with scheme1
-     * @param array $schemes1
-     * @param array $schemes2
+     * @param array $scheme1
+     * @param array $scheme2
      * @return bool
      */
     public function compare(array $scheme1, array $scheme2): bool;

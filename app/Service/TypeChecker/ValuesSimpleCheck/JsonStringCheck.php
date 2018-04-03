@@ -1,7 +1,11 @@
 <?php
-
 namespace App\Service\TypeChecker\ValuesSimpleCheck;
 
+/**
+ * Class JsonStringCheck
+ * @package App\Service\TypeChecker\ValuesSimpleCheck
+ * @author Nikita Gerasimov <tariel-x@ya.ru>
+ */
 class JsonStringCheck extends JsonCommonCheck
 {
     public function compare(array $scheme1, array $scheme2): bool

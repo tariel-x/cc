@@ -22,3 +22,7 @@ Import queries to Postman from `rpc.postman_collection.json`. Register services 
 ## Contract checking
 
 At current moment contracts checking only by hash.
+
+## Tests
+
+Run tests: `vendor/bin/phpunit --bootstrap vendor/autoload.php tests/`.

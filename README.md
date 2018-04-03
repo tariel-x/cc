@@ -12,7 +12,7 @@ Install PHP 7.1+, composer and Redis.
 git clone http://github.com/tariel-x/cc.git
 cd cc
 composer install
-./cc watch
+./cc watch type-check
 ```
 
 ## Usage

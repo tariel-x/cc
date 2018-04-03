@@ -18,8 +18,17 @@ $redis->connect($config['redis']['host']);
 //services
 $schemeStorage = new \App\Service\SchemeStorage\RedisStorage($redis);
 $schemeStorage->setLogger($logger);
-$schemeService = new \App\Service\SchemeService\SchemeService($schemeStorage);
-$schemeService->setLogger($logger);
+
+if (in_array('type-check', $argv)) {
+    $logger->info('Use json-schema type-checking');
+    $schemeService = new \App\Service\SchemeService\TypeCheckSchemeService($schemeStorage);
+    $schemeService->setLogger($logger);
+} else {
+    $logger->info('Use strict schemas comparing');
+    $schemeService = new \App\Service\SchemeService\SchemeService($schemeStorage);
+    $schemeService->setLogger($logger);
+}
+
 $handlers = new \App\Service\RPC\Handlers($schemeService);
 $jsonrpc = new \App\Service\RPC\JsonRPC($handlers);
 

@@ -12,7 +12,7 @@ use Psr\Log\NullLogger;
  * @package App\Service\SchemeService
  * @author Nikita Gerasimov <tariel-x@ya.ru>
  */
-class SchemeService implements SchemeServiceInterface
+class TypeCheckSchemeService implements SchemeServiceInterface
 {
     use LoggerAwareTrait;
     

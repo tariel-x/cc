@@ -1,7 +1,7 @@
 <?php
 namespace App\Service\RPC;
 
-use App\Service\SchemeService\SchemeService;
+use App\Service\SchemeService\SchemeServiceInterface;
 
 /**
  * Class Handlers
@@ -11,15 +11,15 @@ use App\Service\SchemeService\SchemeService;
 class Handlers
 {
     /**
-     * @var SchemeService
+     * @var SchemeServiceInterface
      */
     private $service;
 
     /**
      * Handlers constructor.
-     * @param SchemeService $service
+     * @param SchemeServiceInterface $service
      */
-    public function __construct(SchemeService $service)
+    public function __construct(SchemeServiceInterface $service)
     {
         $this->service = $service;
     }
@@ -27,9 +27,9 @@ class Handlers
     /**
      * Get the value of service
      *
-     * @return SchemeService
+     * @return SchemeServiceInterface
      */ 
-    public function getService(): SchemeService
+    public function getService(): SchemeServiceInterface
     {
         return $this->service;
     }

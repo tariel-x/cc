@@ -2,7 +2,7 @@
 namespace App\Service\ServiceChecker;
 
 use App\Service\Helper;
-use App\Service\SchemeService\SchemeService;
+use App\Service\SchemeService\SchemeServiceInterface;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\Timer;
 use Psr\Log\LoggerAwareTrait;
@@ -21,7 +21,7 @@ class ServiceChecker
     use LoggerAwareTrait;
 
     /**
-     * @var SchemeService
+     * @var SchemeServiceInterface
      */
     private $service;
 
@@ -46,10 +46,10 @@ class ServiceChecker
 
     /**
      * ServiceChecker constructor.
-     * @param SchemeService $service
+     * @param SchemeServiceInterface $service
      * @param LoopInterface $loop
      */
-    public function __construct(SchemeService $service, LoopInterface $loop)
+    public function __construct(SchemeServiceInterface $service, LoopInterface $loop)
     {
         $this->service = $service;
         $this->loop = $loop;
@@ -58,9 +58,9 @@ class ServiceChecker
     }
 
     /**
-     * @return SchemeService
+     * @return SchemeServiceInterface
      */
-    public function getService(): SchemeService
+    public function getService(): SchemeServiceInterface
     {
         return $this->service;
     }

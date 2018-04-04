@@ -9,7 +9,7 @@ Control service contracts providers and contracts usages.
 Install PHP 7.1+, composer and Redis.
 
 ```bash
-git clone http://github.com/tariel-x/cc.git
+git clone https://github.com/tariel-x/cc.git
 cd cc
 composer install
 ./cc watch type-check

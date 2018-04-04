@@ -37,6 +37,16 @@ class ContractBuilder
             ->setUsage($this->makeService($service));
     }
 
+    /**
+     * Build contract with usage from query
+     * @param array $schemes
+     * @return Contract
+     */
+    public function build(array $schemes): Contract
+    {
+        return new Contract($this->makeSchemes($schemes));
+    }
+
      /**
      * @param array $schemes
      * @return Scheme[]

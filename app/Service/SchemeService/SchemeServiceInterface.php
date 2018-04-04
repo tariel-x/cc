@@ -67,6 +67,13 @@ interface SchemeServiceInterface
     public function getProblems(): array;
 
     /**
+     * Return suitable contracts for passed schemes
+     * @param array $schemes
+     * @return ContractModel[]
+     */
+    public function resolve(array $schemes): array;
+
+    /**
      * Check is service removing breaks contract usage
      * @param array $schemes
      * @param array $service

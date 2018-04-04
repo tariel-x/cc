@@ -171,7 +171,23 @@ class ServiceChecker
     {
         $serviceKey = $usage ? 'usage' : 'service';
         $rawContracts = json_decode($data, true);
+
+        if (!is_array($rawContracts)) {
+            $this->remove($currentSchemes, $service, $usage);
+            return;
+        }
+
         foreach ($rawContracts as $rawContract) {
+
+            if (!array_key_exists('schemes', $rawContract)) {
+                $this->remove($currentSchemes, $service, $usage);
+                return;
+            }
+
+            if (!array_key_exists($serviceKey, $rawContract)) {
+                return;
+            }
+
             if (!$usage) {
                 $this->getService()->registerContract($rawContract['schemes'], $rawContract[$serviceKey]);
             } else {
@@ -196,11 +212,16 @@ class ServiceChecker
                     $service['name']
                 )
             );
-            if (!$usage) {
-                $this->getService()->removeContract($currentSchemes, $service);
-            } else {
-                $this->getService()->removeUsage($currentSchemes, $service);
-            }
+            $this->remove($currentSchemes, $service, $usage);
+        }
+    }
+
+    private function remove(array $currentSchemes, array $service, bool $usage)
+    {
+        if (!$usage) {
+            $this->getService()->removeContract($currentSchemes, $service);
+        } else {
+            $this->getService()->removeUsage($currentSchemes, $service);
         }
     }
 }

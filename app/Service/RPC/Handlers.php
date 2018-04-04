@@ -119,6 +119,16 @@ class Handlers
     }
 
     /**
+     * Get suitable contracts
+     * @param array $schemes
+     * @return array
+     */
+    public function resolve(array $schemes): array
+    {
+        return $this->getService()->resolve($schemes);
+    }
+
+    /**
      * Check is service removing breaks contract usage
      * @param array $schemes
      * @param array $service

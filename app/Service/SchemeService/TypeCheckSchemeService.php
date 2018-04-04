@@ -181,19 +181,47 @@ class TypeCheckSchemeService implements SchemeServiceInterface
         $noProviders = array_filter($contracts, function (ContractModel $contract) {
             return empty($contract->getServices()) && !empty($contract->getUsages());
         });
-        $this->logger->debug(sprintf("found no prov %d", count($noProviders)));
+        $this->logger->debug(sprintf("found countracts without providers: %d", count($noProviders)));
         return array_filter($noProviders, function (ContractModel $noProvider) use ($contracts) {
-            return array_reduce($contracts, function (bool $carry, ContractModel $contract) use ($noProvider) {
-                $result = true;
-                foreach ($contract->getSchemes() as $key => $scheme) {
-                    if (!array_key_exists($key, $noProvider->getSchemes())) {
-                        return false;
-                    }
-                    $noProviderScheme = $noProvider->getSchemes()[$key];
-                    $result = $result && $this->getChecker()->compare($scheme, $noProviderScheme);
-                }
-                return $carry && $result;
+            return !array_reduce($contracts, function (bool $carry, ContractModel $contract) use ($noProvider) {
+                return $carry && $this->contractsCompatible($contract, $noProvider);
             }, true);
+        });
+    }
+
+    /**
+     * Checks that user contract is compatible with provider contract
+     * @param ContractModel $provider
+     * @param ContractModel $user
+     * @return bool
+     */
+    private function contractsCompatible(ContractModel $provider, ContractModel $user): bool
+    {
+        $result = true;
+        foreach ($provider->getSchemes() as $key => $scheme) {
+            if (!array_key_exists($key, $user->getSchemes())) {
+                return false;
+            }
+            $userScheme = $user->getSchemes()[$key];
+            $result = $result && $this->getChecker()->compare($scheme, $userScheme);
+        }
+        return $result;
+    }
+
+    /**
+     * Get suitable contracts with providers for passed schemes
+     * @param array $schemes
+     * @return array
+     */
+    public function resolve(array $schemes): array
+    {
+        $reqContract = (new ContractBuilder())->build($schemes);
+        $reqContract = (new ModelBuilder())->createContractModel($reqContract);
+        /** @var ContractModel $reqContract */
+        /** @var ContractModel[] $contracts */
+        $contracts = $this->getStorage()->getAllContracts();
+        return array_filter($contracts, function (ContractModel $contract) use ($reqContract) {
+            return $this->contractsCompatible($contract, $reqContract) && !empty($contract->getServices());
         });
     }
 

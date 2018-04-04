@@ -168,6 +168,17 @@ class SchemeService implements SchemeServiceInterface
     }
 
     /**
+     * Synonym for get
+     * @param array $schemes
+     * @return array
+     */
+    public function resolve(array $schemes): array
+    {
+        $found = [$this->get($schemes)];
+        return $found ?? [];
+    }
+
+    /**
      * Check is service removing breaks contract usage
      * @param array $schemes
      * @param array $service

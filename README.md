@@ -12,12 +12,18 @@ Install PHP 7.1+, composer and Redis.
 git clone https://github.com/tariel-x/cc.git
 cd cc
 composer install
+export CC_REDIS=redis_host
+export CC_UPDATE_TIME=60
 ./cc watch type-check
 ```
 
 ### Docker
 
-In process...
+```bash
+git clone https://github.com/tariel-x/cc.git
+cd cc
+docker-compose up
+```
 
 ## Usage
 
@@ -27,11 +33,9 @@ Or see [query examples](query.md).
 
 ## Contract checking
 
-At current moment contracts are checking only by hash.
+By default service compares contracts by hash. With `type-check` flag service provides json-schema type checking.
 
-### Type checking
-
-Type checking is expected to compare json schemes and to be simple.
+Schema1 seems to be compatible with schema2 if service accepting schema2 can accept scheme1. E.g. schema1 may contain more strict restrictions.
 
 ## Tests
 

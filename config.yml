@@ -1,5 +1,5 @@
 watch:
-  timer: 2
+  timer: "%env(CC_UPDATE_TIME)%"
 server:
   host: "0.0.0.0:8883"
 redis:

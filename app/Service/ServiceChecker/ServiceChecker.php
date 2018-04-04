@@ -152,7 +152,7 @@ class ServiceChecker
             });
         });
         $request->on('error', function (\Exception $e) {
-            echo $e;
+            $this->logger->error($e->getMessage());
         });
         $request->end();
     }

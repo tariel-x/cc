@@ -92,6 +92,10 @@ class SimpleTypeChecker implements TypeCheckerInterface
             }
         }
 
+        if (empty($obj2['required'])) {
+            return false;
+        }
+
         //if obj1 reqs eq obj2 reqs - true
         $diff = array_diff($obj1['required'], $obj2['required']);
         if (count($diff) === 0) {

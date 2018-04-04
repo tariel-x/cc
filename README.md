@@ -23,7 +23,7 @@ In process...
 
 Import queries to Postman from `rpc.postman_collection.json`. Register services proving contracts, register servives using contracts. Get providers addresses for contract-using services.
 
-Or see [query.md].
+Or see [query examples](query.md).
 
 ## Contract checking
 

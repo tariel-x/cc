@@ -220,9 +220,9 @@ class TypeCheckSchemeService implements SchemeServiceInterface
         /** @var ContractModel $reqContract */
         /** @var ContractModel[] $contracts */
         $contracts = $this->getStorage()->getAllContracts();
-        return array_filter($contracts, function (ContractModel $contract) use ($reqContract) {
+        return array_values(array_filter($contracts, function (ContractModel $contract) use ($reqContract) {
             return $this->contractsCompatible($contract, $reqContract) && !empty($contract->getServices());
-        });
+        }));
     }
 
     /**

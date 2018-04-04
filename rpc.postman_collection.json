@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "rpc",
-		"_postman_id": "1057ebc3-6f57-a034-c5dd-bf2dc0824cd4",
+		"_postman_id": "0842dbe5-59e0-426c-ab0c-6167bd26ead3",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -30,7 +30,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -58,7 +59,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -86,7 +88,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -114,7 +117,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -142,7 +146,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -170,7 +175,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -198,7 +204,8 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -226,7 +233,37 @@
 					"path": [
 						"rpc"
 					]
-				}
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "resolve",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"resolve\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n                    \"in\": true,\n                    \"scheme\": {\n                        \"properties\": {\n                            \"a\": {\n                                \"type\": \"string\",\n                                \"maxLength\": 50\n                            }\n                        },\n                        \"required\": [\n                            \"a\"\n                        ],\n                        \"type\": \"object\"\n                    },\n                    \"type\": \"json-schema\"\n                }\n\t\t]\n\t}, \n\t\"id\": 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8883/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8883",
+					"path": [
+						"rpc"
+					]
+				},
+				"description": ""
 			},
 			"response": []
 		}

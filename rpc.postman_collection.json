@@ -18,7 +18,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"registerContract\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"aaa\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"test123\",\n\t\t\t\"address\": [],\n            \"check_url\": \"http://localhost:8881/provider.json\"\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"registerContract\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": {\n                    \"type\": \"object\",\n                    \"properties\": {\n                        \"a\": {\n                            \"type\": \"string\"\n                        }\n                    },\n                    \"required\": [\"a\"]\n                },\n\t\t\t\t\"type\": \"json-schema\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"provider\",\n\t\t\t\"address\": [],\n            \"check_url\": \"http://localhost:8881/provider.json\"\n\t\t}\n\t}, \n\t\"id\": 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8883/rpc",
@@ -47,7 +47,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"registerUsage\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"aaa\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"usage\": {\n\t\t\t\"name\": \"u1\",\n\t\t\t\"address\": [],\n\t\t\t\"check_url\": \"http://localhost:8882/usage.json\"\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"registerUsage\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": {\n                    \"type\": \"object\",\n                    \"properties\": {\n                        \"a\": {\n                            \"type\": \"string\",\n                            \"maxLength\": 50\n                        }\n                    },\n                    \"required\": [\"a\"]\n                },\n\t\t\t\t\"type\": \"json-schema\"\n\t\t\t}\n\t\t],\n\t\t\"usage\": {\n\t\t\t\"name\": \"usage\",\n\t\t\t\"address\": [],\n\t\t\t\"check_url\": \"http://localhost:8882/usage.json\"\n\t\t}\n\t}, \n\t\"id\": 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8883/rpc",
@@ -134,7 +134,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"removeContract\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"bbb\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"test\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"removeContract\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": {\n                    \"type\": \"object\",\n                    \"properties\": {\n                        \"a\": {\n                            \"type\": \"string\"\n                        }\n                    },\n                    \"required\": [\"a\"]\n                },\n\t\t\t\t\"type\": \"json-schema\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"provider\",\n\t\t\t\"address\": [],\n            \"check_url\": \"http://localhost:8881/provider.json\"\n\t\t}\n\t}, \n\t\"id\": 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8883/rpc",
@@ -163,7 +163,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"removeUsage\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"bbb\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"usage\": {\n\t\t\t\"name\": \"u1\",\n\t\t\t\"address\": [],\n\t\t\t\"check_url\": \"http://localhost:8882/usage.json\"\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"removeUsage\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": {\n                    \"type\": \"object\",\n                    \"properties\": {\n                        \"a\": {\n                            \"type\": \"string\",\n                            \"maxLength\": 50\n                        }\n                    },\n                    \"required\": [\"a\"]\n                },\n\t\t\t\t\"type\": \"json-schema\"\n\t\t\t}\n\t\t],\n\t\t\"usage\": {\n\t\t\t\"name\": \"usage\",\n\t\t\t\"address\": [],\n\t\t\t\"check_url\": \"http://localhost:8882/usage.json\"\n\t\t}\n\t}, \n\t\"id\": 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8883/rpc",
@@ -221,7 +221,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"isRemoval\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": [\"aaa\"],\n\t\t\t\t\"type\": \"none\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"test\",\n\t\t\t\"address\": []\n\t\t}\n\t}, \n\t\"id\": 1\n}"
+					"raw": "{\n\t\"jsonrpc\": \"2.0\", \n\t\"method\": \"isRemoval\", \n\t\"params\": {\n\t\t\"schemes\": [\n\t\t\t{\n\t\t\t\t\"in\": true,\n\t\t\t\t\"scheme\": {\n                    \"type\": \"object\",\n                    \"properties\": {\n                        \"a\": {\n                            \"type\": \"string\"\n                        }\n                    },\n                    \"required\": [\"a\"]\n                },\n\t\t\t\t\"type\": \"json-schema\"\n\t\t\t}\n\t\t],\n\t\t\"service\": {\n\t\t\t\"name\": \"provider\",\n\t\t\t\"address\": [],\n            \"check_url\": \"http://localhost:8881/provider.json\"\n\t\t}\n\t}, \n\t\"id\": 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8883/rpc",

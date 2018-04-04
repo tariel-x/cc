@@ -47,7 +47,13 @@ class ControllerA extends BaseController
     public function rpcHandler(ServerRequestInterface $request, array $parameters, string $body) 
     {
         $call = json_decode($body, true);
-        $result = $this->jsonRPC->handle($call);
+        try {
+            $result = $this->jsonRPC->handle($call);
+        } catch (\Throwable $e) {
+            printf("%s\n", $e->getMessage());
+            return new Response(500, [], "");
+        }
+        
         return $this->returnJson($result);
     }
 }

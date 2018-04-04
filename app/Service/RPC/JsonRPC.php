@@ -24,7 +24,9 @@ class JsonRPC
         $return['result'] = $result;
         return $return;
     }
+
     //TODO: REFACTOR!!!
+    //CODE FROM STACKOVERFLOW
     private function call_user_function_named_param($call_arg, array $param_array)
     {
         $Func = null;

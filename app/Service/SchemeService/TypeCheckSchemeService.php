@@ -203,7 +203,7 @@ class TypeCheckSchemeService implements SchemeServiceInterface
                 return false;
             }
             $userScheme = $user->getSchemes()[$key];
-            $result = $result && $this->getChecker()->compare($scheme, $userScheme);
+            $result = $result && $this->getChecker()->compare($scheme['scheme'], $userScheme['scheme']);
         }
         return $result;
     }

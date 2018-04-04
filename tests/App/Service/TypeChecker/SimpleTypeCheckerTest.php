@@ -121,13 +121,44 @@ class SimpleTypeCheckerTest extends TestCase
     {
         $sc1 = [
             'type' => 'object',
-            'properties' => [],
+            'properties' => [
+                'f1' => [
+                    'type' => 'string',
+                ],
+            ],
             'required' => ['f1'],
         ];
         $sc2 = [
             'type' => 'object',
-            'properties' => [],
+            'properties' => [
+                'f1' => [
+                    'type' => 'string',
+                ],
+            ],
             'required' => ['f1', 'f2'],
+        ];
+        $this->assertTrue($this->checker->compare($sc1, $sc2));
+    }
+
+    public function testCompareObjectReqProps()
+    {
+        $sc1 = [
+            'type' => 'object',
+            'properties' => [
+                'f1' => [
+                    'type' => 'string',
+                ],
+            ],
+            'required' => ['f1'],
+        ];
+        $sc2 = [
+            'type' => 'object',
+            'properties' => [
+                'f1' => [
+                    'type' => 'string',
+                ],
+            ],
+            'required' => ['f1'],
         ];
         $this->assertTrue($this->checker->compare($sc1, $sc2));
     }

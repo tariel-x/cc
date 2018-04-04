@@ -86,6 +86,12 @@ class SimpleTypeChecker implements TypeCheckerInterface
             return true;
         }
 
+        foreach ($obj1['required'] as $key) {
+            if (!array_key_exists($key, $obj2['properties'])) {
+                return false;
+            }
+        }
+
         //if obj1 reqs eq obj2 reqs - true
         $diff = array_diff($obj1['required'], $obj2['required']);
         if (count($diff) === 0) {
@@ -98,6 +104,7 @@ class SimpleTypeChecker implements TypeCheckerInterface
         if (!empty($intersect) && count($diff) === 0) {
             return true;
         }
+
         return false;
     }
 

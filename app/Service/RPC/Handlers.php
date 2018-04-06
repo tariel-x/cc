@@ -90,23 +90,23 @@ class Handlers
     /**
      * Register usage of contract
      * @param array $schemes
-     * @param array $service
+     * @param array $usage
      * @return bool
      */
-    public function registerUsage(array $schemes, array $service): bool
+    public function registerUsage(array $schemes, array $usage): bool
     {
-        return $this->getService()->registerUsage($schemes, $service);
+        return $this->getService()->registerUsage($schemes, $usage);
     }
 
     /**
      * Remove usage of contract
      * @param array $schemes
-     * @param array $service
+     * @param array $usage
      * @return bool
      */
-    public function removeUsage(array $schemes, array $service): bool
+    public function removeUsage(array $schemes, array $usage): bool
     {
-        return $this->getService()->removeUsage($schemes, $service);
+        return $this->getService()->removeUsage($schemes, $usage);
     }
 
     /**

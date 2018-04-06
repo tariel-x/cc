@@ -75,7 +75,9 @@ class JsonRPC
         {
             if($Param->isDefaultValueAvailable()) $params[$Param->getPosition()] = $Param->getDefaultValue();
             if(array_key_exists($Param->name, $param_array)) $params[$Param->getPosition()] = $param_array[$Param->name];
-            if(!$Param->isOptional() && !isset($params[$Param->getPosition()])) die("No Defaultvalue available and no Value supplied!\r\n");
+            if(!$Param->isOptional() && !isset($params[$Param->getPosition()])) {
+                die("No Default value available and no Value supplied!\r\n");
+            }
         }
         if($Func instanceof \ReflectionFunction) return $Func->invokeArgs($params);
         if($Func->isStatic()) return $Func->invokeArgs(null, $params);
